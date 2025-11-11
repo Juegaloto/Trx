@@ -1201,9 +1201,40 @@
         .gap-2 {
             gap: 8px;
         }
+        
+        /* Botón de actualizar página */
+        .refresh-btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 4px 12px rgba(26, 115, 232, 0.3);
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 100;
+        }
+        
+        .refresh-btn:hover {
+            background-color: var(--primary-dark);
+            transform: rotate(180deg);
+            box-shadow: 0 6px 15px rgba(26, 115, 232, 0.4);
+        }
     </style>
 </head>
 <body>
+    <!-- Botón de actualizar página -->
+    <button class="refresh-btn" id="refreshPage">
+        <i class="fas fa-sync-alt"></i>
+    </button>
+    
     <!-- Sistema de Notificaciones -->
     <div class="notification-container" id="notificationContainer"></div>
     
@@ -1979,6 +2010,7 @@
         const confirmationDescription = document.getElementById('confirmationDescription');
         const confirmationIcon = document.getElementById('confirmationIcon');
         const claimReferralEarningsBtn = document.getElementById('claimReferralEarnings');
+        const refreshPageBtn = document.getElementById('refreshPage');
         
         // Filtros de transacciones
         const filterAll = document.getElementById('filterAll');
@@ -2024,7 +2056,7 @@
                         email: currentUser.email,
                         referralCode: generateReferralCode(),
                         referredBy: null,
-                        balance: 0,
+                        balance: 10, // BONO DE 10 TRX PARA NUEVOS USUARIOS
                         totalEarnings: 0,
                         totalInvested: 0,
                         activeInvestments: 0,
@@ -2034,10 +2066,44 @@
                         referralEarnings: 0,
                         lastReferralClaim: null,
                         registrationDate: new Date(),
-                        lastLogin: new Date()
+                        lastLogin: new Date(),
+                        welcomeBonusClaimed: true // Marcar que ya recibió el bono
                     }).then(() => {
+                        // Registrar transacción del bono de bienvenida
+                        db.collection('transactions').add({
+                            userId: currentUser.uid,
+                            type: 'bonus',
+                            amount: 10,
+                            description: 'Bono de bienvenida de 10 TRX',
+                            date: new Date(),
+                            status: 'completed'
+                        });
+                        
                         loadUserData();
                     });
+                } else {
+                    // Si el usuario ya existe, verificar si ya recibió el bono
+                    const userData = doc.data();
+                    if (!userData.welcomeBonusClaimed) {
+                        // Dar bono de bienvenida a usuarios existentes que no lo hayan recibido
+                        userRef.update({
+                            balance: (userData.balance || 0) + 10,
+                            welcomeBonusClaimed: true
+                        }).then(() => {
+                            // Registrar transacción del bono de bienvenida
+                            db.collection('transactions').add({
+                                userId: currentUser.uid,
+                                type: 'bonus',
+                                amount: 10,
+                                description: 'Bono de bienvenida de 10 TRX',
+                                date: new Date(),
+                                status: 'completed'
+                            });
+                            
+                            showNotification('¡Has recibido un bono de bienvenida de 10 TRX!', 'success');
+                            loadUserData();
+                        });
+                    }
                 }
             }).catch(error => {
                 console.error('Error al inicializar datos:', error);
@@ -2079,6 +2145,11 @@
                     copyToClipboard(targetElement.textContent);
                     showNotification('Copiado al portapapeles', 'success');
                 });
+            });
+            
+            // Botón de actualizar página
+            refreshPageBtn.addEventListener('click', function() {
+                location.reload();
             });
             
             // Autenticación
@@ -2370,7 +2441,7 @@
                         email: email,
                         referralCode: userReferralCode,
                         referredBy: referralCode || null,
-                        balance: 0,
+                        balance: 10, // BONO DE 10 TRX PARA NUEVOS USUARIOS
                         totalEarnings: 0,
                         totalInvested: 0,
                         activeInvestments: 0,
@@ -2380,11 +2451,23 @@
                         referralEarnings: 0,
                         lastReferralClaim: null,
                         registrationDate: new Date(),
-                        lastLogin: new Date()
+                        lastLogin: new Date(),
+                        welcomeBonusClaimed: true // Marcar que ya recibió el bono
                     });
                 })
                 .then(() => {
-                    showNotification('Cuenta creada exitosamente', 'success');
+                    // Registrar transacción del bono de bienvenida
+                    return db.collection('transactions').add({
+                        userId: currentUser.uid,
+                        type: 'bonus',
+                        amount: 10,
+                        description: 'Bono de bienvenida de 10 TRX',
+                        date: new Date(),
+                        status: 'completed'
+                    });
+                })
+                .then(() => {
+                    showNotification('Cuenta creada exitosamente. ¡Has recibido un bono de 10 TRX!', 'success');
                     showAuthModal('login');
                 })
                 .catch((error) => {
@@ -3460,7 +3543,7 @@
                         let amountClass = '';
                         let amountPrefix = '';
                         
-                        if (transaction.type === 'deposit' || transaction.type === 'earning') {
+                        if (transaction.type === 'deposit' || transaction.type === 'earning' || transaction.type === 'bonus') {
                             amountClass = 'transaction-positive';
                             amountPrefix = '+';
                         } else if (transaction.type === 'withdrawal' || transaction.type === 'investment') {
@@ -3493,6 +3576,11 @@
                                 typeIcon = 'fas fa-coins';
                                 typeClass = 'transaction-type earning';
                                 typeText = 'Ganancia';
+                                break;
+                            case 'bonus':
+                                typeIcon = 'fas fa-gift';
+                                typeClass = 'transaction-type earning';
+                                typeText = 'Bono';
                                 break;
                             default:
                                 typeIcon = 'fas fa-exchange-alt';
