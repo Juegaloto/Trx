@@ -1852,8 +1852,8 @@
                     </div>
                     
                     <div class="form-group">
-                        <label class="form-label">Código de Referido (Opcional)</label>
-                        <input type="text" class="form-control" id="registerReferralCode" placeholder="Si te refirió alguien, ingresa su código aquí">
+                        <label class="form-label">Código de Referido (Obligatorio)</label>
+                        <input type="text" class="form-control" id="registerReferralCode" placeholder="Ingresa el código de referido" required>
                     </div>
                     
                     <button type="submit" class="btn btn-primary w-100">Registrarse</button>
@@ -1976,6 +1976,7 @@
         let userData = null;
         let currentTransactionFilter = 'all';
         let pendingConfirmation = null;
+        let earningsInterval = null;
         
         // Elementos del DOM
         const sidebar = document.getElementById('sidebar');
@@ -2036,8 +2037,10 @@
                     initializeUserData();
                     loadUserData();
                     showMainApp();
+                    startEarningsTimer();
                 } else {
                     showAuth();
+                    stopEarningsTimer();
                 }
             });
         }
@@ -2427,6 +2430,11 @@
                 return;
             }
             
+            if (!referralCode) {
+                showNotification('El código de referido es obligatorio', 'error');
+                return;
+            }
+            
             // Crear usuario en Firebase Auth
             auth.createUserWithEmailAndPassword(email, password)
                 .then((userCredential) => {
@@ -2791,17 +2799,18 @@
             // basándose en el último reclamo y el tiempo transcurrido
             const lastClaim = investment.lastClaim ? investment.lastClaim.toDate() : investment.startDate.toDate();
             const now = new Date();
-            const hoursSinceLastClaim = (now - lastClaim) / (1000 * 60 * 60);
+            const secondsSinceLastClaim = (now - lastClaim) / 1000;
             
-            // Permitir reclamar cada 24 horas
-            if (hoursSinceLastClaim < 24) {
+            // Permitir reclamar cada 10 segundos
+            if (secondsSinceLastClaim < 10) {
                 return 0;
             }
             
             // Calcular ganancias desde el último reclamo
             const dailyEarnings = investment.amount * 0.03;
-            const daysSinceLastClaim = hoursSinceLastClaim / 24;
-            return dailyEarnings * Math.floor(daysSinceLastClaim);
+            const secondsInDay = 24 * 60 * 60;
+            const earningsPerSecond = dailyEarnings / secondsInDay;
+            return earningsPerSecond * Math.floor(secondsSinceLastClaim);
         }
         
         // Manejar reclamo de ganancias
@@ -3701,6 +3710,34 @@
                     console.error('Error al cambiar contraseña:', error);
                     showNotification('Error al cambiar contraseña: ' + error.message, 'error');
                 });
+        }
+        
+        // Iniciar temporizador para actualizar ganancias en tiempo real
+        function startEarningsTimer() {
+            // Actualizar cada 10 segundos
+            earningsInterval = setInterval(() => {
+                if (currentUser) {
+                    updateEarningsInRealTime();
+                }
+            }, 10000); // 10 segundos
+        }
+        
+        // Detener temporizador de ganancias
+        function stopEarningsTimer() {
+            if (earningsInterval) {
+                clearInterval(earningsInterval);
+                earningsInterval = null;
+            }
+        }
+        
+        // Actualizar ganancias en tiempo real
+        function updateEarningsInRealTime() {
+            if (!currentUser) return;
+            
+            // Actualizar inversiones activas en el dashboard
+            if (document.getElementById('dashboard-page') && !document.getElementById('dashboard-page').classList.contains('d-none')) {
+                loadDashboardData();
+            }
         }
         
         // Utilidades
