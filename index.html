@@ -1230,6 +1230,46 @@
             border-radius: 20px;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         }
+        
+        /* Estilos para enlaces de contacto */
+        .contact-links {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .contact-link {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 15px;
+            background-color: rgba(255, 255, 255, 0.7);
+            border-radius: var(--border-radius);
+            text-decoration: none;
+            color: var(--dark);
+            transition: var(--transition);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        
+        .contact-link:hover {
+            background-color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .contact-link i {
+            font-size: 1.2rem;
+            color: var(--primary);
+        }
+        
+        .contact-link.support i {
+            color: #0088cc;
+        }
+        
+        .contact-link.info i {
+            color: var(--secondary);
+        }
     </style>
 </head>
 <body>
@@ -1262,6 +1302,24 @@
             <li><a href="#" data-page="profile"><i class="fas fa-user"></i> Perfil</a></li>
             <li><a href="#" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a></li>
         </ul>
+        
+        <!-- Sección de Contacto -->
+        <div class="contact-links">
+            <a href="https://t.me/+2vdtNnTh-nIzZDkx" target="_blank" class="contact-link support">
+                <i class="fab fa-telegram"></i>
+                <div>
+                    <strong>Soporte</strong>
+                    <div class="form-text">Contacta con nuestro equipo de soporte</div>
+                </div>
+            </a>
+            <a href="https://t.me/+sOSTR7_4AoYwMjY5" target="_blank" class="contact-link info">
+                <i class="fab fa-telegram"></i>
+                <div>
+                    <strong>Canal de Información</strong>
+                    <div class="form-text">Mantente informado con nuestras actualizaciones</div>
+                </div>
+            </a>
+        </div>
     </div>
     
     <!-- Header -->
@@ -1359,6 +1417,29 @@
                         <div class="text-center" id="investmentsLoading">
                             <p>Cargando inversiones...</p>
                         </div>
+                    </div>
+                </div>
+                
+                <!-- Sección de Contacto en Dashboard -->
+                <div class="section">
+                    <div class="section-header">
+                        <div class="section-title">Contacto y Soporte</div>
+                    </div>
+                    <div class="contact-links">
+                        <a href="https://t.me/+2vdtNnTh-nIzZDkx" target="_blank" class="contact-link support">
+                            <i class="fab fa-telegram"></i>
+                            <div>
+                                <strong>Soporte Técnico</strong>
+                                <div class="form-text">¿Tienes problemas? Contacta con nuestro equipo de soporte</div>
+                            </div>
+                        </a>
+                        <a href="https://t.me/+sOSTR7_4AoYwMjY5" target="_blank" class="contact-link info">
+                            <i class="fab fa-telegram"></i>
+                            <div>
+                                <strong>Canal de Información</strong>
+                                <div class="form-text">Mantente informado con nuestras últimas actualizaciones</div>
+                            </div>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -1568,7 +1649,7 @@
                     </div>
                     
                     <div class="alert alert-warning">
-                        <i class="fas fa-info-circle"></i> Los retiros se procesan dentro de las 24 horas. El monto mínimo de retiro es de 20 TRX.
+                        <i class="fas fa-info-circle"></i> Los retiros se procesan dentro de las 24 horas. El monto mínimo de retiro es de 5 TRX.
                     </div>
                     
                     <div class="form-group">
@@ -1584,8 +1665,8 @@
                     
                     <div class="form-group">
                         <label class="form-label">Monto a retirar (TRX)</label>
-                        <input type="number" class="form-control" id="withdrawAmount" min="20" required>
-                        <div class="form-text">El retiro mínimo es de 20 TRX.</div>
+                        <input type="number" class="form-control" id="withdrawAmount" min="5" required>
+                        <div class="form-text">El retiro mínimo es de 5 TRX.</div>
                     </div>
                     
                     <button class="btn btn-primary w-100" id="submitWithdraw">
@@ -1819,6 +1900,29 @@
                         </button>
                     </form>
                 </div>
+                
+                <!-- Sección de Contacto en Perfil -->
+                <div class="section">
+                    <div class="section-header">
+                        <div class="section-title">Contacto y Soporte</div>
+                    </div>
+                    <div class="contact-links">
+                        <a href="https://t.me/+2vdtNnTh-nIzZDkx" target="_blank" class="contact-link support">
+                            <i class="fab fa-telegram"></i>
+                            <div>
+                                <strong>Soporte Técnico</strong>
+                                <div class="form-text">¿Tienes problemas? Contacta con nuestro equipo de soporte</div>
+                            </div>
+                        </a>
+                        <a href="https://t.me/+sOSTR7_4AoYwMjY5" target="_blank" class="contact-link info">
+                            <i class="fab fa-telegram"></i>
+                            <div>
+                                <strong>Canal de Información</strong>
+                                <div class="form-text">Mantente informado con nuestras últimas actualizaciones</div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -1980,6 +2084,7 @@
         let currentTransactionFilter = 'all';
         let pendingConfirmation = null;
         let earningsInterval = null;
+        let adminNotificationsListener = null;
         
         // Elementos del DOM
         const sidebar = document.getElementById('sidebar');
@@ -2041,9 +2146,11 @@
                     loadUserData();
                     showMainApp();
                     startEarningsTimer();
+                    setupAdminNotifications();
                 } else {
                     showAuth();
                     stopEarningsTimer();
+                    stopAdminNotifications();
                 }
             });
         }
@@ -3194,8 +3301,8 @@
             const amount = parseFloat(document.getElementById('withdrawAmount').value);
             const address = document.getElementById('withdrawAddress').value;
             
-            if (amount < 20) {
-                showNotification('El retiro mínimo es de 20 TRX', 'error');
+            if (amount < 5) {
+                showNotification('El retiro mínimo es de 5 TRX', 'error');
                 return;
             }
             
@@ -3707,6 +3814,39 @@
                     console.error('Error al cambiar contraseña:', error);
                     showNotification('Error al cambiar contraseña: ' + error.message, 'error');
                 });
+        }
+        
+        // Configurar notificaciones en tiempo real desde administración
+        function setupAdminNotifications() {
+            if (!currentUser) return;
+            
+            // Escuchar notificaciones globales
+            adminNotificationsListener = db.collection('adminNotifications')
+                .where('active', '==', true)
+                .orderBy('timestamp', 'desc')
+                .limit(5)
+                .onSnapshot(snapshot => {
+                    snapshot.docChanges().forEach(change => {
+                        if (change.type === 'added') {
+                            const notification = change.doc.data();
+                            showNotification(
+                                notification.message, 
+                                notification.type || 'info', 
+                                notification.title || 'Notificación del Sistema'
+                            );
+                        }
+                    });
+                }, error => {
+                    console.error('Error al escuchar notificaciones:', error);
+                });
+        }
+        
+        // Detener notificaciones en tiempo real
+        function stopAdminNotifications() {
+            if (adminNotificationsListener) {
+                adminNotificationsListener();
+                adminNotificationsListener = null;
+            }
         }
         
         // Iniciar temporizador para actualizar ganancias en tiempo real
