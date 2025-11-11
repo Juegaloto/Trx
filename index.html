@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Sistema de Inversión TRX</title>
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
@@ -40,6 +40,8 @@
             color: var(--dark);
             line-height: 1.6;
             font-size: 14px;
+            -webkit-text-size-adjust: 100%;
+            touch-action: manipulation;
         }
         
         .container {
@@ -1382,6 +1384,49 @@
                                 <i class="fas fa-check"></i> Seleccionar
                             </button>
                         </div>
+                        
+                        <!-- NUEVOS PLANES DE INVERSIÓN -->
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">Plan Pro</div>
+                                <div class="card-icon primary">
+                                    <i class="fas fa-rocket"></i>
+                                </div>
+                            </div>
+                            <div class="card-value">501 - 1000 TRX</div>
+                            <div class="card-description">3.5% diario por 15 días</div>
+                            <button class="btn btn-primary mt-3" data-plan="pro">
+                                <i class="fas fa-check"></i> Seleccionar
+                            </button>
+                        </div>
+                        
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">Plan VIP</div>
+                                <div class="card-icon secondary">
+                                    <i class="fas fa-crown"></i>
+                                </div>
+                            </div>
+                            <div class="card-value">1001 - 2000 TRX</div>
+                            <div class="card-description">4% diario por 15 días</div>
+                            <button class="btn btn-primary mt-3" data-plan="vip">
+                                <i class="fas fa-check"></i> Seleccionar
+                            </button>
+                        </div>
+                        
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">Plan Elite</div>
+                                <div class="card-icon warning">
+                                    <i class="fas fa-star"></i>
+                                </div>
+                            </div>
+                            <div class="card-value">2001 - 5000 TRX</div>
+                            <div class="card-description">5% diario por 15 días</div>
+                            <button class="btn btn-primary mt-3" data-plan="elite">
+                                <i class="fas fa-check"></i> Seleccionar
+                            </button>
+                        </div>
                     </div>
                 </div>
                 
@@ -1398,14 +1443,14 @@
                         
                         <div class="form-group">
                             <label class="form-label">Monto a invertir (TRX)</label>
-                            <input type="number" class="form-control" id="investmentAmount" min="30" max="500" required>
-                            <div class="form-text">El monto debe estar entre 30 y 500 TRX según el plan seleccionado.</div>
+                            <input type="number" class="form-control" id="investmentAmount" min="30" max="5000" required>
+                            <div class="form-text">El monto debe estar entre 30 y 5000 TRX según el plan seleccionado.</div>
                         </div>
                         
                         <div class="form-group">
                             <label class="form-label">Ganancia esperada</label>
                             <input type="text" class="form-control" id="expectedEarnings" readonly>
-                            <div class="form-text">3% diario durante 15 días (45% de retorno total).</div>
+                            <div class="form-text" id="expectedEarningsText">3% diario durante 15 días (45% de retorno total).</div>
                         </div>
                         
                         <button type="submit" class="btn btn-primary w-100">
@@ -1558,14 +1603,16 @@
                         <div class="form-text">Gana un 10% de comisión por cada inversión que realicen tus referidos.</div>
                     </div>
                     
+                    <!-- ENLACE DEL BOT DE TELEGRAM COMO ÚNICO ENLACE DE INVITACIÓN -->
                     <div class="form-group">
-                        <label class="form-label">Tu enlace de referido</label>
+                        <label class="form-label">Tu enlace de invitación</label>
                         <div class="referral-code">
-                            <span id="referralLink">CARGANDO...</span>
+                            <span id="referralLink">https://t.me/TRXInvestment12_bot?start=</span>
                             <button class="copy-btn" data-target="referralLink">
                                 <i class="fas fa-copy"></i>
                             </button>
                         </div>
+                        <div class="form-text">Comparte este enlace del bot de Telegram con tu código de referido para invitar a más personas.</div>
                     </div>
                 </div>
                 
@@ -1617,6 +1664,28 @@
                             </div>
                             <div class="card-value" id="availableCommissions">0 TRX</div>
                             <div class="card-description">Listas para retirar</div>
+                        </div>
+                        
+                        <!-- Ganancias por referido directo -->
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">Ganancias por Referido</div>
+                                <div class="card-icon warning">
+                                    <i class="fas fa-user-plus"></i>
+                                </div>
+                            </div>
+                            <div class="card-value" id="referralEarnings">0 TRX</div>
+                            <div class="card-description">0.1 TRX por cada referido</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Sección para reclamar ganancias por referidos -->
+                    <div class="mt-3">
+                        <button class="btn btn-primary" id="claimReferralEarnings">
+                            <i class="fas fa-coins"></i> Reclamar Ganancias por Referidos
+                        </button>
+                        <div class="form-text mt-2">
+                            Puedes reclamar 0.1 TRX por cada referido cada 24 horas, de lunes a viernes.
                         </div>
                     </div>
                 </div>
@@ -1909,6 +1978,7 @@
         const confirmationMessage = document.getElementById('confirmationMessage');
         const confirmationDescription = document.getElementById('confirmationDescription');
         const confirmationIcon = document.getElementById('confirmationIcon');
+        const claimReferralEarningsBtn = document.getElementById('claimReferralEarnings');
         
         // Filtros de transacciones
         const filterAll = document.getElementById('filterAll');
@@ -1961,6 +2031,8 @@
                         totalReferrals: 0,
                         totalCommissions: 0,
                         availableCommissions: 0,
+                        referralEarnings: 0,
+                        lastReferralClaim: null,
                         registrationDate: new Date(),
                         lastLogin: new Date()
                     }).then(() => {
@@ -2103,6 +2175,9 @@
             filterEarnings.addEventListener('click', function() {
                 setTransactionFilter('earning');
             });
+            
+            // Botón para reclamar ganancias por referidos
+            claimReferralEarningsBtn.addEventListener('click', handleClaimReferralEarnings);
         }
         
         // Mostrar/ocultar menú lateral
@@ -2302,6 +2377,8 @@
                         totalReferrals: 0,
                         totalCommissions: 0,
                         availableCommissions: 0,
+                        referralEarnings: 0,
+                        lastReferralClaim: null,
                         registrationDate: new Date(),
                         lastLogin: new Date()
                     });
@@ -2721,22 +2798,51 @@
             let planName = '';
             let minAmount = 0;
             let maxAmount = 0;
+            let dailyPercentage = 3;
+            let totalPercentage = 45;
             
             switch(plan) {
                 case 'basic':
                     planName = 'Plan Básico';
                     minAmount = 30;
                     maxAmount = 100;
+                    dailyPercentage = 3;
+                    totalPercentage = 45;
                     break;
                 case 'advanced':
                     planName = 'Plan Avanzado';
                     minAmount = 101;
                     maxAmount = 300;
+                    dailyPercentage = 3;
+                    totalPercentage = 45;
                     break;
                 case 'premium':
                     planName = 'Plan Premium';
                     minAmount = 301;
                     maxAmount = 500;
+                    dailyPercentage = 3;
+                    totalPercentage = 45;
+                    break;
+                case 'pro':
+                    planName = 'Plan Pro';
+                    minAmount = 501;
+                    maxAmount = 1000;
+                    dailyPercentage = 3.5;
+                    totalPercentage = 52.5;
+                    break;
+                case 'vip':
+                    planName = 'Plan VIP';
+                    minAmount = 1001;
+                    maxAmount = 2000;
+                    dailyPercentage = 4;
+                    totalPercentage = 60;
+                    break;
+                case 'elite':
+                    planName = 'Plan Elite';
+                    minAmount = 2001;
+                    maxAmount = 5000;
+                    dailyPercentage = 5;
+                    totalPercentage = 75;
                     break;
             }
             
@@ -2744,6 +2850,8 @@
             document.getElementById('investmentAmount').setAttribute('min', minAmount);
             document.getElementById('investmentAmount').setAttribute('max', maxAmount);
             document.getElementById('investmentAmount').value = minAmount;
+            document.getElementById('expectedEarningsText').textContent = 
+                `${dailyPercentage}% diario durante 15 días (${totalPercentage}% de retorno total).`;
             
             updateExpectedEarnings();
             
@@ -2761,7 +2869,14 @@
         // Actualizar ganancias esperadas
         function updateExpectedEarnings() {
             const amount = parseFloat(document.getElementById('investmentAmount').value) || 0;
-            const expectedEarnings = amount * 0.45; // 45% de retorno total
+            const planName = document.getElementById('selectedPlan').value;
+            let percentage = 0.45; // Por defecto 45%
+            
+            if (planName.includes('Pro')) percentage = 0.525;
+            if (planName.includes('VIP')) percentage = 0.60;
+            if (planName.includes('Elite')) percentage = 0.75;
+            
+            const expectedEarnings = amount * percentage;
             document.getElementById('expectedEarnings').value = expectedEarnings.toFixed(2) + ' TRX';
         }
         
@@ -2777,8 +2892,8 @@
             const amount = parseFloat(document.getElementById('investmentAmount').value);
             const plan = document.getElementById('selectedPlan').value;
             
-            if (amount < 30 || amount > 500) {
-                showNotification('El monto de inversión debe estar entre 30 y 500 TRX', 'error');
+            if (amount < 30 || amount > 5000) {
+                showNotification('El monto de inversión debe estar entre 30 y 5000 TRX', 'error');
                 return;
             }
             
@@ -3148,7 +3263,9 @@
             
             // Actualizar código de referido
             document.getElementById('referralCode').textContent = userData.referralCode || 'N/A';
-            document.getElementById('referralLink').textContent = window.location.origin + '?ref=' + (userData.referralCode || '');
+            
+            // Actualizar enlace del bot de Telegram con el código de referido
+            document.getElementById('referralLink').textContent = 'https://t.me/TRXInvestment12_bot?start=' + (userData.referralCode || '');
             
             // Cargar lista de referidos
             db.collection('users')
@@ -3161,6 +3278,7 @@
                     if (snapshot.empty) {
                         referralsTable.innerHTML = '<tr><td colspan="4" class="text-center">No tienes referidos aún</td></tr>';
                         document.getElementById('totalReferrals').textContent = '0';
+                        document.getElementById('referralEarnings').textContent = '0 TRX';
                         return;
                     }
                     
@@ -3188,9 +3306,13 @@
                         referralsTable.appendChild(row);
                     });
                     
+                    // Calcular ganancias por referido (0.1 TRX por cada referido)
+                    const referralEarnings = snapshot.size * 0.1;
+                    
                     // Actualizar estadísticas de comisiones
                     document.getElementById('totalCommissions').textContent = totalCommissions.toFixed(2) + ' TRX';
                     document.getElementById('availableCommissions').textContent = availableCommissions.toFixed(2) + ' TRX';
+                    document.getElementById('referralEarnings').textContent = referralEarnings.toFixed(2) + ' TRX';
                     document.getElementById('totalReferrals').textContent = snapshot.size;
                     
                     // Actualizar también en el dashboard
@@ -3203,6 +3325,78 @@
                     console.error('Error al cargar referidos:', error);
                     document.getElementById('referralsTable').innerHTML = '<tr><td colspan="4" class="text-center">Error al cargar referidos</td></tr>';
                 });
+        }
+        
+        // Manejar reclamo de ganancias por referidos
+        function handleClaimReferralEarnings() {
+            if (!currentUser || !userData) return;
+            
+            // Verificar si es día hábil (lunes a viernes)
+            const today = new Date();
+            const dayOfWeek = today.getDay(); // 0 = domingo, 1 = lunes, ..., 6 = sábado
+            
+            if (dayOfWeek === 0 || dayOfWeek === 6) {
+                showNotification('Las ganancias por referidos solo se pueden reclamar de lunes a viernes', 'warning');
+                return;
+            }
+            
+            // Verificar si ya se reclamó hoy
+            if (userData.lastReferralClaim) {
+                const lastClaimDate = userData.lastReferralClaim.toDate();
+                const timeDiff = today - lastClaimDate;
+                const hoursDiff = timeDiff / (1000 * 60 * 60);
+                
+                if (hoursDiff < 24) {
+                    showNotification('Ya has reclamado tus ganancias por referidos hoy. Vuelve mañana.', 'warning');
+                    return;
+                }
+            }
+            
+            // Calcular ganancias (0.1 TRX por cada referido)
+            const referralEarnings = (userData.totalReferrals || 0) * 0.1;
+            
+            if (referralEarnings <= 0) {
+                showNotification('No tienes ganancias por referidos para reclamar', 'warning');
+                return;
+            }
+            
+            // Mostrar confirmación
+            showConfirmation(
+                'Reclamar Ganancias por Referidos',
+                `¿Estás seguro de que deseas reclamar ${referralEarnings.toFixed(2)} TRX?`,
+                'Esta cantidad corresponde a 0.1 TRX por cada uno de tus referidos.',
+                'success'
+            ).then(() => {
+                // Actualizar balance del usuario
+                const newBalance = (userData.balance || 0) + referralEarnings;
+                const newTotalEarnings = (userData.totalEarnings || 0) + referralEarnings;
+                
+                return db.collection('users').doc(currentUser.uid).update({
+                    balance: newBalance,
+                    totalEarnings: newTotalEarnings,
+                    lastReferralClaim: new Date()
+                });
+            })
+            .then(() => {
+                // Registrar transacción de ganancias por referidos
+                return db.collection('transactions').add({
+                    userId: currentUser.uid,
+                    type: 'earning',
+                    amount: referralEarnings,
+                    description: `Ganancias por ${userData.totalReferrals || 0} referidos`,
+                    date: new Date(),
+                    status: 'completed'
+                });
+            })
+            .then(() => {
+                showNotification(`Ganancias por referidos de ${referralEarnings.toFixed(2)} TRX reclamadas exitosamente`, 'success');
+                loadUserData();
+                loadReferralsData();
+            })
+            .catch(error => {
+                console.error('Error al reclamar ganancias por referidos:', error);
+                showNotification('Error al reclamar ganancias por referidos: ' + error.message, 'error');
+            });
         }
         
         // Cargar historial de transacciones (VERSIÓN CORREGIDA - SIN ÍNDICES COMPUESTOS)
