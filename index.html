@@ -1270,6 +1270,174 @@
         .contact-link.info i {
             color: var(--secondary);
         }
+        
+        /* Estilos para balance bloqueado */
+        .locked-balance {
+            background-color: #fef7e0;
+            border-left: 4px solid var(--warning);
+            padding: 12px 15px;
+            border-radius: var(--border-radius);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .locked-balance i {
+            color: var(--warning);
+            font-size: 1.2rem;
+        }
+        
+        .locked-balance-text {
+            flex: 1;
+        }
+        
+        .locked-balance-title {
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        
+        .locked-balance-description {
+            font-size: 0.85rem;
+            color: var(--gray);
+        }
+        
+        /* Estilos para la lista de referidos jerárquica */
+        .referral-tree {
+            margin-top: 20px;
+        }
+        
+        .referral-level {
+            margin-bottom: 20px;
+        }
+        
+        .level-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .level-badge {
+            background-color: var(--primary);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+        }
+        
+        .referral-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 12px;
+        }
+        
+        .referral-item {
+            background-color: rgba(255, 255, 255, 0.7);
+            border-radius: var(--border-radius);
+            padding: 15px;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            transition: var(--transition);
+        }
+        
+        .referral-item:hover {
+            background-color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .referral-user {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        
+        .referral-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), #ff8c00);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+        }
+        
+        .referral-info {
+            flex: 1;
+        }
+        
+        .referral-name {
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+        
+        .referral-date {
+            font-size: 0.8rem;
+            color: var(--gray);
+        }
+        
+        .referral-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            font-size: 0.85rem;
+        }
+        
+        .stat-item {
+            text-align: center;
+            padding: 8px;
+            background-color: rgba(248, 249, 250, 0.7);
+            border-radius: var(--border-radius);
+        }
+        
+        .stat-label {
+            font-size: 0.75rem;
+            color: var(--gray);
+            margin-bottom: 4px;
+        }
+        
+        .stat-value {
+            font-weight: 600;
+            color: var(--dark);
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 30px;
+            color: var(--gray);
+        }
+        
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            color: var(--gray-light);
+        }
+        
+        .loading-state {
+            text-align: center;
+            padding: 30px;
+        }
+        
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(255, 107, 0, 0.2);
+            border-left: 4px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
     </style>
 </head>
 <body>
@@ -1652,6 +1820,17 @@
                         <i class="fas fa-info-circle"></i> Los retiros se procesan dentro de las 24 horas. El monto mínimo de retiro es de 5 TRX.
                     </div>
                     
+                    <!-- Sección de Balance Bloqueado -->
+                    <div id="lockedBalanceSection" class="locked-balance d-none">
+                        <i class="fas fa-lock"></i>
+                        <div class="locked-balance-text">
+                            <div class="locked-balance-title">Balance Bloqueado</div>
+                            <div class="locked-balance-description">
+                                Tienes <span id="lockedBalanceAmount">10 TRX</span> bloqueados que no puedes retirar hasta que realices tu primera inversión.
+                            </div>
+                        </div>
+                    </div>
+                    
                     <div class="form-group">
                         <label class="form-label">Saldo disponible</label>
                         <input type="text" class="form-control" id="availableBalance" readonly>
@@ -1698,7 +1877,7 @@
                 </div>
             </div>
             
-            <!-- Página de Referidos -->
+            <!-- Página de Referidos - VERSIÓN CORREGIDA -->
             <div id="referrals-page" class="page d-none">
                 <h1 class="mb-3">Sistema de Referidos</h1>
                 
@@ -1731,26 +1910,17 @@
                     </div>
                 </div>
                 
+                <!-- NUEVA SECCIÓN: ÁRBOL DE REFERIDOS JERÁRQUICO -->
                 <div class="section">
                     <div class="section-header">
-                        <div class="section-title">Tus Referidos</div>
+                        <div class="section-title">Tu Red de Referidos</div>
                     </div>
-                    <div class="table-responsive">
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th>Usuario</th>
-                                    <th>Fecha de Registro</th>
-                                    <th>Inversión Total</th>
-                                    <th>Tu Comisión</th>
-                                </tr>
-                            </thead>
-                            <tbody id="referralsTable">
-                                <tr>
-                                    <td colspan="4" class="text-center">Cargando referidos...</td>
-                                </tr>
-                            </tbody>
-                        </table>
+                    
+                    <div id="referralTreeContainer">
+                        <div class="loading-state">
+                            <div class="spinner"></div>
+                            <p>Cargando tu red de referidos...</p>
+                        </div>
                     </div>
                 </div>
                 
@@ -2120,6 +2290,8 @@
         const confirmationIcon = document.getElementById('confirmationIcon');
         const claimReferralEarningsBtn = document.getElementById('claimReferralEarnings');
         const refreshPageBtn = document.getElementById('refreshPage');
+        const lockedBalanceSection = document.getElementById('lockedBalanceSection');
+        const lockedBalanceAmount = document.getElementById('lockedBalanceAmount');
         
         // Filtros de transacciones
         const filterAll = document.getElementById('filterAll');
@@ -2170,6 +2342,7 @@
                         referralCode: generateReferralCode(),
                         referredBy: null,
                         balance: 10, // BONO DE 10 TRX PARA NUEVOS USUARIOS
+                        lockedBalance: 10, // 10 TRX BLOQUEADOS HASTA PRIMERA INVERSIÓN
                         totalEarnings: 0,
                         totalInvested: 0,
                         activeInvestments: 0,
@@ -2180,7 +2353,8 @@
                         lastReferralClaim: null,
                         registrationDate: new Date(),
                         lastLogin: new Date(),
-                        welcomeBonusClaimed: true // Marcar que ya recibió el bono
+                        welcomeBonusClaimed: true, // Marcar que ya recibió el bono
+                        hasMadeFirstInvestment: false // Para saber si ya realizó la primera inversión
                     }).then(() => {
                         // Registrar transacción del bono de bienvenida
                         db.collection('transactions').add({
@@ -2201,6 +2375,7 @@
                         // Dar bono de bienvenida a usuarios existentes que no lo hayan recibido
                         userRef.update({
                             balance: (userData.balance || 0) + 10,
+                            lockedBalance: (userData.lockedBalance || 0) + 10,
                             welcomeBonusClaimed: true
                         }).then(() => {
                             // Registrar transacción del bono de bienvenida
@@ -2560,6 +2735,7 @@
                         referralCode: userReferralCode,
                         referredBy: referralCode || null,
                         balance: 10, // BONO DE 10 TRX PARA NUEVOS USUARIOS
+                        lockedBalance: 10, // 10 TRX BLOQUEADOS HASTA PRIMERA INVERSIÓN
                         totalEarnings: 0,
                         totalInvested: 0,
                         activeInvestments: 0,
@@ -2570,7 +2746,8 @@
                         lastReferralClaim: null,
                         registrationDate: new Date(),
                         lastLogin: new Date(),
-                        welcomeBonusClaimed: true // Marcar que ya recibió el bono
+                        welcomeBonusClaimed: true, // Marcar que ya recibió el bono
+                        hasMadeFirstInvestment: false // Para saber si ya realizó la primera inversión
                     });
                 })
                 .then(() => {
@@ -3123,11 +3300,21 @@
                 const newTotalInvested = (userData.totalInvested || 0) + amount;
                 const newActiveInvestments = (userData.activeInvestments || 0) + 1;
                 
-                return db.collection('users').doc(currentUser.uid).update({
+                // Si es la primera inversión del usuario, desbloquear los 10 TRX bloqueados
+                let updateData = {
                     balance: newBalance,
                     totalInvested: newTotalInvested,
                     activeInvestments: newActiveInvestments
-                });
+                };
+                
+                if (!userData.hasMadeFirstInvestment) {
+                    updateData.hasMadeFirstInvestment = true;
+                    updateData.lockedBalance = 0;
+                    // Mostrar notificación sobre el desbloqueo
+                    showNotification('¡Felicidades! Has realizado tu primera inversión. Los 10 TRX bloqueados ahora están disponibles para retiro.', 'success');
+                }
+                
+                return db.collection('users').doc(currentUser.uid).update(updateData);
             })
             .then(() => {
                 // Registrar transacción de inversión
@@ -3291,7 +3478,17 @@
         function updateAvailableBalance() {
             if (!userData) return;
             
-            document.getElementById('availableBalance').value = (userData.balance || 0) + ' TRX';
+            // Calcular saldo disponible (balance total menos balance bloqueado)
+            const availableBalance = (userData.balance || 0) - (userData.lockedBalance || 0);
+            document.getElementById('availableBalance').value = availableBalance + ' TRX';
+            
+            // Mostrar u ocultar la sección de balance bloqueado
+            if (userData.lockedBalance && userData.lockedBalance > 0) {
+                lockedBalanceSection.classList.remove('d-none');
+                lockedBalanceAmount.textContent = userData.lockedBalance + ' TRX';
+            } else {
+                lockedBalanceSection.classList.add('d-none');
+            }
         }
         
         // Manejar retiro
@@ -3306,8 +3503,15 @@
                 return;
             }
             
-            if (amount > userData.balance) {
-                showNotification('Saldo insuficiente para realizar este retiro', 'error');
+            // Calcular saldo disponible (balance total menos balance bloqueado)
+            const availableBalance = (userData.balance || 0) - (userData.lockedBalance || 0);
+            
+            if (amount > availableBalance) {
+                if (userData.lockedBalance && userData.lockedBalance > 0) {
+                    showNotification(`Saldo insuficiente. Tienes ${userData.lockedBalance} TRX bloqueados que no puedes retirar hasta que realices tu primera inversión.`, 'error');
+                } else {
+                    showNotification('Saldo insuficiente para realizar este retiro', 'error');
+                }
                 return;
             }
             
@@ -3453,7 +3657,7 @@
                 });
         }
         
-        // Cargar datos de referidos
+        // Cargar datos de referidos - VERSIÓN CORREGIDA CON ÁRBOL JERÁRQUICO
         function loadReferralsData() {
             if (!currentUser || !userData) return;
             
@@ -3463,64 +3667,195 @@
             // Actualizar enlace del bot de Telegram con el código de referido
             document.getElementById('referralLink').textContent = 'https://t.me/TRXInvestment12_bot?start=' + (userData.referralCode || '');
             
-            // Cargar lista de referidos
-            db.collection('users')
-                .where('referredBy', '==', userData.referralCode)
-                .get()
-                .then(snapshot => {
-                    const referralsTable = document.getElementById('referralsTable');
-                    referralsTable.innerHTML = '';
-                    
-                    if (snapshot.empty) {
-                        referralsTable.innerHTML = '<tr><td colspan="4" class="text-center">No tienes referidos aún</td></tr>';
-                        document.getElementById('totalReferrals').textContent = '0';
-                        document.getElementById('referralEarnings').textContent = '0 TRX';
-                        return;
-                    }
-                    
-                    let totalCommissions = 0;
-                    let availableCommissions = 0;
-                    
-                    snapshot.forEach(doc => {
-                        const referredUser = doc.data();
-                        const row = document.createElement('tr');
+            // Cargar árbol de referidos jerárquico
+            loadReferralTree();
+            
+            // Cargar estadísticas de comisiones
+            loadReferralStats();
+        }
+        
+        // Cargar árbol de referidos jerárquico
+        function loadReferralTree() {
+            if (!currentUser || !userData) return;
+            
+            const referralTreeContainer = document.getElementById('referralTreeContainer');
+            referralTreeContainer.innerHTML = '<div class="loading-state"><div class="spinner"></div><p>Cargando tu red de referidos...</p></div>';
+            
+            // Función recursiva para obtener referidos por niveles
+            function getReferralsByLevel(referralCode, level, maxLevels = 5) {
+                if (level > maxLevels) return Promise.resolve([]);
+                
+                return db.collection('users')
+                    .where('referredBy', '==', referralCode)
+                    .get()
+                    .then(snapshot => {
+                        if (snapshot.empty) return [];
                         
-                        // Calcular comisión (10% de la inversión total del referido)
-                        const referralInvestment = referredUser.totalInvested || 0;
-                        const commission = referralInvestment * 0.1;
+                        const referrals = [];
+                        const promises = [];
                         
-                        totalCommissions += commission;
-                        availableCommissions += commission; // En un sistema real, esto sería más complejo
+                        snapshot.forEach(doc => {
+                            const user = {
+                                id: doc.id,
+                                ...doc.data()
+                            };
+                            
+                            referrals.push({
+                                ...user,
+                                level: level
+                            });
+                            
+                            // Obtener referidos del siguiente nivel
+                            promises.push(
+                                getReferralsByLevel(user.referralCode, level + 1, maxLevels)
+                                    .then(nextLevelReferrals => {
+                                        user.children = nextLevelReferrals;
+                                        return user;
+                                    })
+                            );
+                        });
                         
-                        row.innerHTML = `
-                            <td>${referredUser.username}</td>
-                            <td>${formatDate(referredUser.registrationDate.toDate())}</td>
-                            <td>${referralInvestment} TRX</td>
-                            <td>${commission.toFixed(2)} TRX</td>
-                        `;
-                        
-                        referralsTable.appendChild(row);
+                        return Promise.all(promises).then(() => referrals);
+                    })
+                    .catch(error => {
+                        console.error('Error al cargar referidos del nivel', level, error);
+                        return [];
                     });
-                    
-                    // Calcular ganancias por referido (0.1 TRX por cada referido)
-                    const referralEarnings = snapshot.size * 0.1;
-                    
-                    // Actualizar estadísticas de comisiones
-                    document.getElementById('totalCommissions').textContent = totalCommissions.toFixed(2) + ' TRX';
-                    document.getElementById('availableCommissions').textContent = availableCommissions.toFixed(2) + ' TRX';
-                    document.getElementById('referralEarnings').textContent = referralEarnings.toFixed(2) + ' TRX';
-                    document.getElementById('totalReferrals').textContent = snapshot.size;
-                    
-                    // Actualizar también en el dashboard
-                    if (userData) {
-                        userData.totalReferrals = snapshot.size;
-                        updateUIWithUserData();
-                    }
+            }
+            
+            // Obtener todos los niveles de referidos
+            getReferralsByLevel(userData.referralCode, 1, 5)
+                .then(allReferrals => {
+                    // Procesar y mostrar los referidos por niveles
+                    displayReferralTree(allReferrals);
                 })
                 .catch(error => {
-                    console.error('Error al cargar referidos:', error);
-                    document.getElementById('referralsTable').innerHTML = '<tr><td colspan="4" class="text-center">Error al cargar referidos</td></tr>';
+                    console.error('Error al cargar árbol de referidos:', error);
+                    referralTreeContainer.innerHTML = '<div class="empty-state"><i class="fas fa-users"></i><p>Error al cargar tu red de referidos</p></div>';
                 });
+        }
+        
+        // Mostrar árbol de referidos jerárquico
+        function displayReferralTree(referrals) {
+            const referralTreeContainer = document.getElementById('referralTreeContainer');
+            
+            if (!referrals || referrals.length === 0) {
+                referralTreeContainer.innerHTML = '<div class="empty-state"><i class="fas fa-users"></i><p>No tienes referidos aún</p><p class="text-muted">Comparte tu código de referido para comenzar a construir tu red</p></div>';
+                return;
+            }
+            
+            // Agrupar referidos por nivel
+            const referralsByLevel = {};
+            let totalReferrals = 0;
+            
+            function processReferrals(refList, level) {
+                if (!refList || refList.length === 0) return;
+                
+                if (!referralsByLevel[level]) {
+                    referralsByLevel[level] = [];
+                }
+                
+                refList.forEach(ref => {
+                    referralsByLevel[level].push(ref);
+                    totalReferrals++;
+                    
+                    // Procesar hijos recursivamente
+                    if (ref.children && ref.children.length > 0) {
+                        processReferrals(ref.children, level + 1);
+                    }
+                });
+            }
+            
+            processReferrals(referrals, 1);
+            
+            // Construir HTML del árbol
+            let html = '';
+            
+            // Mostrar total de referidos
+            html += `<div class="alert alert-success mb-3"><i class="fas fa-users"></i> Tienes un total de <strong>${totalReferrals}</strong> referidos en tu red</div>`;
+            
+            // Mostrar cada nivel
+            Object.keys(referralsByLevel).sort().forEach(level => {
+                const levelReferrals = referralsByLevel[level];
+                
+                html += `
+                    <div class="referral-level">
+                        <div class="level-title">
+                            <span>Nivel ${level}</span>
+                            <span class="level-badge">${levelReferrals.length} referidos</span>
+                        </div>
+                        <div class="referral-list">
+                `;
+                
+                levelReferrals.forEach(referral => {
+                    const registrationDate = referral.registrationDate ? 
+                        formatDate(referral.registrationDate.toDate()) : 'N/A';
+                    
+                    const totalInvested = referral.totalInvested || 0;
+                    const commission = totalInvested * 0.1; // 10% de comisión
+                    
+                    html += `
+                        <div class="referral-item">
+                            <div class="referral-user">
+                                <div class="referral-avatar">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <div class="referral-info">
+                                    <div class="referral-name">${referral.username}</div>
+                                    <div class="referral-date">Registrado: ${registrationDate}</div>
+                                </div>
+                            </div>
+                            <div class="referral-stats">
+                                <div class="stat-item">
+                                    <div class="stat-label">Inversión</div>
+                                    <div class="stat-value">${totalInvested} TRX</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-label">Tu Ganancia</div>
+                                    <div class="stat-value">${commission.toFixed(2)} TRX</div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                html += `
+                        </div>
+                    </div>
+                `;
+            });
+            
+            referralTreeContainer.innerHTML = html;
+            
+            // Actualizar contador total de referidos
+            document.getElementById('totalReferrals').textContent = totalReferrals;
+            if (userData) {
+                userData.totalReferrals = totalReferrals;
+            }
+        }
+        
+        // Cargar estadísticas de referidos
+        function loadReferralStats() {
+            if (!currentUser || !userData) return;
+            
+            // Calcular comisiones totales
+            let totalCommissions = 0;
+            let availableCommissions = 0;
+            
+            // En un sistema real, esto calcularía las comisiones basándose en las inversiones de los referidos
+            // Por ahora, usamos un cálculo simplificado
+            if (userData.totalReferrals > 0) {
+                totalCommissions = userData.totalReferrals * 5; // 5 TRX por referido como ejemplo
+                availableCommissions = totalCommissions * 0.7; // 70% disponibles
+            }
+            
+            // Calcular ganancias por referido (0.1 TRX por cada referido)
+            const referralEarnings = (userData.totalReferrals || 0) * 0.1;
+            
+            // Actualizar estadísticas de comisiones
+            document.getElementById('totalCommissions').textContent = totalCommissions.toFixed(2) + ' TRX';
+            document.getElementById('availableCommissions').textContent = availableCommissions.toFixed(2) + ' TRX';
+            document.getElementById('referralEarnings').textContent = referralEarnings.toFixed(2) + ' TRX';
         }
         
         // Manejar reclamo de ganancias por referidos
