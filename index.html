@@ -1478,276 +1478,13 @@
             color: var(--dark);
         }
 
-        /* ESTILOS PARA EL TORNEO DE MINERÍA PvP */
-        .tournament-container {
-            display: grid;
-            grid-template-columns: 1fr 300px;
-            gap: 20px;
-            margin-top: 20px;
-        }
-
-        .game-area {
-            background: rgba(0, 0, 0, 0.7);
-            border-radius: var(--border-radius);
-            padding: 20px;
-            min-height: 500px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .game-map {
-            width: 100%;
-            height: 400px;
-            background: linear-gradient(135deg, #1a3c34, #2d5a4e);
-            border-radius: var(--border-radius);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .player {
-            position: absolute;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
+        /* ESTILOS PARA EL TORNEO DE MINERÍA PvP (ELIMINADOS) */
+        
+        /* Filtros de transacciones */
+        .transaction-filters {
             display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: bold;
-            font-size: 0.8rem;
-            transition: all 0.3s ease;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-            z-index: 10;
-        }
-
-        .player.me {
-            border: 3px solid #ffeb3b;
-            box-shadow: 0 0 10px #ffeb3b;
-        }
-
-        .upgrade {
-            position: absolute;
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 0.8rem;
-            animation: pulse 2s infinite;
-            cursor: pointer;
-            z-index: 5;
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-            100% { transform: scale(1); }
-        }
-
-        .upgrade.nft {
-            background: linear-gradient(135deg, #9c27b0, #673ab7);
-        }
-
-        .upgrade.gpu {
-            background: linear-gradient(135deg, #2196f3, #03a9f4);
-        }
-
-        .upgrade.energy {
-            background: linear-gradient(135deg, #4caf50, #8bc34a);
-        }
-
-        .game-controls {
-            display: flex;
-            gap: 10px;
-            margin-top: 15px;
-            justify-content: center;
-        }
-
-        .game-info {
-            background: rgba(255, 255, 255, 0.9);
-            border-radius: var(--border-radius);
-            padding: 20px;
-        }
-
-        .ranking-list {
-            margin-top: 15px;
-        }
-
-        .ranking-item {
-            display: flex;
-            align-items: center;
-            padding: 10px;
-            border-bottom: 1px solid var(--gray-light);
-        }
-
-        .ranking-position {
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            background: var(--primary);
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            margin-right: 10px;
-        }
-
-        .ranking-position.top3 {
-            background: var(--secondary);
-        }
-
-        .ranking-details {
-            flex: 1;
-        }
-
-        .ranking-name {
-            font-weight: 600;
-        }
-
-        .ranking-trx {
-            font-size: 0.8rem;
-            color: var(--gray);
-        }
-
-        .puzzle-modal .modal-content {
-            max-width: 400px;
-            text-align: center;
-        }
-
-        .puzzle-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 5px;
-            margin: 20px 0;
-        }
-
-        .puzzle-piece {
-            width: 80px;
-            height: 80px;
-            background: var(--primary);
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 1.5rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .puzzle-piece:hover {
-            background: var(--primary-dark);
-            transform: scale(1.05);
-        }
-
-        .mining-rig {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 15px;
-            padding: 10px;
-            background: rgba(255, 255, 255, 0.7);
-            border-radius: var(--border-radius);
-        }
-
-        .rig-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: var(--primary);
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .rig-info {
-            flex: 1;
-        }
-
-        .rig-name {
-            font-weight: 600;
-            margin-bottom: 5px;
-        }
-
-        .rig-stats {
-            display: flex;
-            gap: 15px;
-            font-size: 0.8rem;
-        }
-
-        .tournament-card {
-            background: linear-gradient(135deg, #1a3c34, #2d5a4e);
-            color: white;
-            border-radius: var(--border-radius);
-            padding: 20px;
-            margin-bottom: 20px;
-            text-align: center;
-        }
-
-        .tournament-card h3 {
-            margin-bottom: 15px;
-            font-size: 1.2rem;
-        }
-
-        .tournament-prize {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: #ffeb3b;
-            margin: 10px 0;
-        }
-
-        .tournament-timer {
-            font-size: 1.2rem;
-            font-weight: bold;
-            margin: 10px 0;
-            color: #4caf50;
-        }
-
-        .tournament-participants {
-            display: flex;
+            gap: 8px;
             flex-wrap: wrap;
-            gap: 10px;
-            justify-content: center;
-            margin: 15px 0;
-        }
-
-        .participant {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.2);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.8rem;
-        }
-
-        .tournament-status {
-            padding: 8px 15px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            margin-top: 10px;
-            display: inline-block;
-        }
-
-        .status-joining {
-            background: rgba(76, 175, 80, 0.2);
-            color: #4caf50;
-        }
-
-        .status-active {
-            background: rgba(255, 193, 7, 0.2);
-            color: #ffc107;
-        }
-
-        .status-finished {
-            background: rgba(244, 67, 54, 0.2);
-            color: #f44336;
         }
     </style>
 </head>
@@ -1777,7 +1514,6 @@
             <li><a href="#" data-page="deposit"><i class="fas fa-wallet"></i> Depositar</a></li>
             <li><a href="#" data-page="withdraw"><i class="fas fa-money-bill-wave"></i> Retirar</a></li>
             <li><a href="#" data-page="referrals"><i class="fas fa-users"></i> Referidos</a></li>
-            <li><a href="#" data-page="tournament"><i class="fas fa-trophy"></i> Torneo PvP</a></li>
             <li><a href="#" data-page="history"><i class="fas fa-history"></i> Historial</a></li>
             <li><a href="#" data-page="profile"><i class="fas fa-user"></i> Perfil</a></li>
             <li><a href="#" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a></li>
@@ -1816,7 +1552,6 @@
                     <li><a href="#" data-page="deposit">Depositar</a></li>
                     <li><a href="#" data-page="withdraw">Retirar</a></li>
                     <li><a href="#" data-page="referrals">Referidos</a></li>
-                    <li><a href="#" data-page="tournament">Torneo PvP</a></li>
                 </ul>
                 <div class="user-menu">
                     <div class="user-info" id="userInfo">
@@ -1939,6 +1674,21 @@
                     </div>
                     
                     <div class="dashboard-cards">
+                        <!-- NUEVO PLAN DE 10 TRX -->
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">Plan Inicial</div>
+                                <div class="card-icon primary">
+                                    <i class="fas fa-cube"></i>
+                                </div>
+                            </div>
+                            <div class="card-value">10 TRX</div>
+                            <div class="card-description">3% diario por 15 días</div>
+                            <button class="btn btn-primary mt-3" data-plan="initial">
+                                <i class="fas fa-check"></i> Seleccionar
+                            </button>
+                        </div>
+                        
                         <div class="card">
                             <div class="card-header">
                                 <div class="card-title">Plan Básico</div>
@@ -2039,8 +1789,8 @@
                         
                         <div class="form-group">
                             <label class="form-label">Monto a invertir (TRX)</label>
-                            <input type="number" class="form-control" id="investmentAmount" min="30" max="5000" required>
-                            <div class="form-text">El monto debe estar entre 30 y 5000 TRX según el plan seleccionado.</div>
+                            <input type="number" class="form-control" id="investmentAmount" min="10" max="5000" required>
+                            <div class="form-text">El monto debe estar entre 10 y 5000 TRX según el plan seleccionado.</div>
                         </div>
                         
                         <div class="form-group">
@@ -2130,7 +1880,7 @@
                     </div>
                     
                     <div class="alert alert-warning">
-                        <i class="fas fa-info-circle"></i> Los retiros se procesan dentro de las 24 horas. El monto mínimo de retiro es de 5 TRX.
+                        <i class="fas fa-info-circle"></i> Los retiros se procesan dentro de las 24 horas. El monto mínimo de retiro es de 2 TRX para el primer retiro, luego debe depositar mínimo 10 TRX para realizar nuevos retiros.
                     </div>
                     
                     <!-- Sección de Balance Bloqueado -->
@@ -2157,8 +1907,8 @@
                     
                     <div class="form-group">
                         <label class="form-label">Monto a retirar (TRX)</label>
-                        <input type="number" class="form-control" id="withdrawAmount" min="5" required>
-                        <div class="form-text">El retiro mínimo es de 5 TRX.</div>
+                        <input type="number" class="form-control" id="withdrawAmount" min="2" required>
+                        <div class="form-text" id="withdrawMinText">El retiro mínimo es de 2 TRX para el primer retiro.</div>
                     </div>
                     
                     <button class="btn btn-primary w-100" id="submitWithdraw">
@@ -2317,133 +2067,6 @@
                         </button>
                         <div class="form-text mt-2">
                             Puedes reclamar 0.1 TRX por cada referido cada 24 horas, de lunes a viernes.
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Página de Torneo PvP -->
-            <div id="tournament-page" class="page d-none">
-                <h1 class="mb-3">Torneo del Pool de Minería (PvP)</h1>
-                
-                <div class="section">
-                    <div class="section-header">
-                        <div class="section-title">Torneos Disponibles</div>
-                    </div>
-                    
-                    <div class="dashboard-cards">
-                        <div class="tournament-card">
-                            <h3>Torneo de 4 Jugadores</h3>
-                            <div class="tournament-prize">Premio: 40 TRX</div>
-                            <div class="tournament-timer">Entrada: 10 Hash Points</div>
-                            <div class="tournament-participants">
-                                <div class="participant">1</div>
-                                <div class="participant">2</div>
-                                <div class="participant">3</div>
-                                <div class="participant empty">?</div>
-                            </div>
-                            <div class="tournament-status status-joining">Uniéndose</div>
-                            <button class="btn btn-primary mt-3 join-tournament" data-size="4">
-                                <i class="fas fa-play"></i> Unirse al Torneo
-                            </button>
-                        </div>
-                        
-                        <div class="tournament-card">
-                            <h3>Torneo de 8 Jugadores</h3>
-                            <div class="tournament-prize">Premio: 80 TRX</div>
-                            <div class="tournament-timer">Entrada: 20 Hash Points</div>
-                            <div class="tournament-participants">
-                                <div class="participant">1</div>
-                                <div class="participant">2</div>
-                                <div class="participant">3</div>
-                                <div class="participant">4</div>
-                                <div class="participant">5</div>
-                                <div class="participant empty">?</div>
-                                <div class="participant empty">?</div>
-                                <div class="participant empty">?</div>
-                            </div>
-                            <div class="tournament-status status-joining">Uniéndose</div>
-                            <button class="btn btn-primary mt-3 join-tournament" data-size="8">
-                                <i class="fas fa-play"></i> Unirse al Torneo
-                            </button>
-                        </div>
-                        
-                        <div class="tournament-card">
-                            <h3>Torneo de 16 Jugadores</h3>
-                            <div class="tournament-prize">Premio: 160 TRX</div>
-                            <div class="tournament-timer">Entrada: 40 Hash Points</div>
-                            <div class="tournament-participants">
-                                <div class="participant">1</div>
-                                <div class="participant">2</div>
-                                <div class="participant">3</div>
-                                <div class="participant">4</div>
-                                <div class="participant">5</div>
-                                <div class="participant">6</div>
-                                <div class="participant">7</div>
-                                <div class="participant">8</div>
-                                <div class="participant empty">?</div>
-                                <div class="participant empty">?</div>
-                                <div class="participant empty">?</div>
-                                <div class="participant empty">?</div>
-                                <div class="participant empty">?</div>
-                                <div class="participant empty">?</div>
-                                <div class="participant empty">?</div>
-                                <div class="participant empty">?</div>
-                            </div>
-                            <div class="tournament-status status-joining">Uniéndose</div>
-                            <button class="btn btn-primary mt-3 join-tournament" data-size="16">
-                                <i class="fas fa-play"></i> Unirse al Torneo
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="section d-none" id="activeTournamentSection">
-                    <div class="section-header">
-                        <div class="section-title">Torneo en Curso</div>
-                        <div class="tournament-timer" id="tournamentTimer">05:00</div>
-                    </div>
-                    
-                    <div class="tournament-container">
-                        <div class="game-area">
-                            <div class="game-map" id="gameMap">
-                                <!-- Aquí se renderizarán los jugadores y mejoras -->
-                            </div>
-                            <div class="game-controls">
-                                <button class="btn btn-primary" id="moveUp">
-                                    <i class="fas fa-arrow-up"></i> Arriba
-                                </button>
-                                <button class="btn btn-primary" id="moveDown">
-                                    <i class="fas fa-arrow-down"></i> Abajo
-                                </button>
-                                <button class="btn btn-primary" id="moveLeft">
-                                    <i class="fas fa-arrow-left"></i> Izquierda
-                                </button>
-                                <button class="btn btn-primary" id="moveRight">
-                                    <i class="fas fa-arrow-right"></i> Derecha
-                                </button>
-                            </div>
-                        </div>
-                        
-                        <div class="game-info">
-                            <h3>Tu Equipo de Minería</h3>
-                            <div class="mining-rig">
-                                <div class="rig-icon">
-                                    <i class="fas fa-microchip"></i>
-                                </div>
-                                <div class="rig-info">
-                                    <div class="rig-name">Rig Básico</div>
-                                    <div class="rig-stats">
-                                        <div>Hash Rate: <span id="hashRate">10 H/s</span></div>
-                                        <div>TRX Minado: <span id="minedTRX">0</span></div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <h3 class="mt-3">Ranking</h3>
-                            <div class="ranking-list" id="rankingList">
-                                <!-- Aquí se mostrará el ranking de jugadores -->
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -2681,28 +2304,6 @@
         </div>
     </div>
 
-    <!-- Modal de Puzzle para Mejoras -->
-    <div class="modal puzzle-modal" id="puzzleModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <div class="modal-title">¡Encuentra la Mejora!</div>
-                <button class="close-modal" id="closePuzzleModal">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            <div class="text-center">
-                <p>Resuelve este puzzle para obtener la mejora:</p>
-                <div class="puzzle-grid" id="puzzleGrid">
-                    <!-- Aquí se generará el puzzle -->
-                </div>
-                <p id="puzzleTimer">Tiempo: 10 segundos</p>
-                <button class="btn btn-primary mt-3" id="submitPuzzle">
-                    <i class="fas fa-check"></i> Resolver
-                </button>
-            </div>
-        </div>
-    </div>
-
     <!-- Diálogo de Confirmación Genérico -->
     <div class="modal confirmation-dialog" id="confirmationDialog">
         <div class="modal-content">
@@ -2751,16 +2352,6 @@
         let earningsInterval = null;
         let adminNotificationsListener = null;
         
-        // Variables para el torneo PvP
-        let currentTournament = null;
-        let tournamentInterval = null;
-        let playerPosition = { x: 200, y: 200 };
-        let upgrades = [];
-        let players = [];
-        let minedTRX = 0;
-        let hashRate = 10;
-        let tournamentTimeLeft = 300; // 5 minutos en segundos
-        
         // Elementos del DOM
         const sidebar = document.getElementById('sidebar');
         const overlay = document.getElementById('overlay');
@@ -2797,24 +2388,7 @@
         const refreshPageBtn = document.getElementById('refreshPage');
         const lockedBalanceSection = document.getElementById('lockedBalanceSection');
         const lockedBalanceAmount = document.getElementById('lockedBalanceAmount');
-        
-        // Elementos del torneo PvP
-        const joinTournamentButtons = document.querySelectorAll('.join-tournament');
-        const activeTournamentSection = document.getElementById('activeTournamentSection');
-        const gameMap = document.getElementById('gameMap');
-        const moveUpBtn = document.getElementById('moveUp');
-        const moveDownBtn = document.getElementById('moveDown');
-        const moveLeftBtn = document.getElementById('moveLeft');
-        const moveRightBtn = document.getElementById('moveRight');
-        const hashRateElement = document.getElementById('hashRate');
-        const minedTRXElement = document.getElementById('minedTRX');
-        const rankingList = document.getElementById('rankingList');
-        const tournamentTimer = document.getElementById('tournamentTimer');
-        const puzzleModal = document.getElementById('puzzleModal');
-        const closePuzzleModal = document.getElementById('closePuzzleModal');
-        const puzzleGrid = document.getElementById('puzzleGrid');
-        const submitPuzzle = document.getElementById('submitPuzzle');
-        const puzzleTimerElement = document.getElementById('puzzleTimer');
+        const withdrawMinText = document.getElementById('withdrawMinText');
         
         // Filtros de transacciones
         const filterAll = document.getElementById('filterAll');
@@ -2880,7 +2454,8 @@
                         lastLogin: new Date(),
                         welcomeBonusClaimed: true, // Marcar que ya recibió el bono
                         hasMadeFirstInvestment: false, // Para saber si ya realizó la primera inversión
-                        hashPoints: 100 // Puntos de hash iniciales para el torneo
+                        hasMadeFirstWithdrawal: false, // Para controlar el primer retiro
+                        lastDepositAfterFirstWithdrawal: 0 // Para controlar depósitos después del primer retiro
                     }).then(() => {
                         // Registrar transacción del bono de bienvenida
                         db.collection('transactions').add({
@@ -3063,554 +2638,7 @@
             
             // Botón para reclamar ganancias por referidos
             claimReferralEarningsBtn.addEventListener('click', handleClaimReferralEarnings);
-            
-            // Torneo PvP
-            joinTournamentButtons.forEach(button => {
-                button.addEventListener('click', function() {
-                    const tournamentSize = parseInt(this.getAttribute('data-size'));
-                    joinTournament(tournamentSize);
-                });
-            });
-            
-            // Controles de movimiento del juego
-            moveUpBtn.addEventListener('click', function() {
-                movePlayer(0, -20);
-            });
-            
-            moveDownBtn.addEventListener('click', function() {
-                movePlayer(0, 20);
-            });
-            
-            moveLeftBtn.addEventListener('click', function() {
-                movePlayer(-20, 0);
-            });
-            
-            moveRightBtn.addEventListener('click', function() {
-                movePlayer(20, 0);
-            });
-            
-            // Controles de teclado para movimiento
-            document.addEventListener('keydown', function(e) {
-                if (!currentTournament) return;
-                
-                switch(e.key) {
-                    case 'ArrowUp':
-                        e.preventDefault();
-                        movePlayer(0, -20);
-                        break;
-                    case 'ArrowDown':
-                        e.preventDefault();
-                        movePlayer(0, 20);
-                        break;
-                    case 'ArrowLeft':
-                        e.preventDefault();
-                        movePlayer(-20, 0);
-                        break;
-                    case 'ArrowRight':
-                        e.preventDefault();
-                        movePlayer(20, 0);
-                        break;
-                }
-            });
-            
-            // Modal de puzzle
-            closePuzzleModal.addEventListener('click', function() {
-                puzzleModal.classList.remove('active');
-            });
-            
-            submitPuzzle.addEventListener('click', handlePuzzleSubmit);
         }
-        
-        // Funciones del Torneo PvP
-        
-        // Unirse a un torneo
-        function joinTournament(size) {
-            if (!currentUser || !userData) {
-                showNotification('Debes iniciar sesión para unirte a un torneo', 'error');
-                return;
-            }
-            
-            const entryCost = size * 10; // 10 Hash Points por jugador
-            
-            if (userData.hashPoints < entryCost) {
-                showNotification(`No tienes suficientes Hash Points. Necesitas ${entryCost}`, 'error');
-                return;
-            }
-            
-            showConfirmation(
-                'Unirse al Torneo',
-                `¿Estás seguro de que deseas unirte al torneo de ${size} jugadores?`,
-                `Costo de entrada: ${entryCost} Hash Points. Premio: ${size * 10} TRX.`,
-                'warning'
-            ).then(() => {
-                // Crear o unirse a un torneo
-                db.collection('tournaments')
-                    .where('size', '==', size)
-                    .where('status', '==', 'joining')
-                    .get()
-                    .then(snapshot => {
-                        if (!snapshot.empty) {
-                            // Unirse a un torneo existente
-                            const tournamentDoc = snapshot.docs[0];
-                            const tournament = tournamentDoc.data();
-                            const tournamentId = tournamentDoc.id;
-                            
-                            // Verificar si ya está lleno
-                            if (tournament.participants.length >= size) {
-                                showNotification('Este torneo ya está lleno', 'error');
-                                return;
-                            }
-                            
-                            // Agregar usuario al torneo
-                            return db.collection('tournaments').doc(tournamentId).update({
-                                participants: firebase.firestore.FieldValue.arrayUnion({
-                                    userId: currentUser.uid,
-                                    username: userData.username,
-                                    trxMined: 0,
-                                    hashRate: 10
-                                })
-                            }).then(() => {
-                                // Restar Hash Points
-                                return db.collection('users').doc(currentUser.uid).update({
-                                    hashPoints: userData.hashPoints - entryCost
-                                });
-                            }).then(() => {
-                                currentTournament = {
-                                    id: tournamentId,
-                                    ...tournament,
-                                    participants: [...tournament.participants, {
-                                        userId: currentUser.uid,
-                                        username: userData.username,
-                                        trxMined: 0,
-                                        hashRate: 10
-                                    }]
-                                };
-                                
-                                // Si el torneo está lleno, iniciarlo
-                                if (currentTournament.participants.length >= size) {
-                                    startTournament(tournamentId);
-                                } else {
-                                    showNotification(`Te has unido al torneo. Esperando a ${size - currentTournament.participants.length} jugadores más.`, 'success');
-                                }
-                            });
-                        } else {
-                            // Crear nuevo torneo
-                            return db.collection('tournaments').add({
-                                size: size,
-                                status: 'joining',
-                                prize: size * 10,
-                                entryCost: entryCost,
-                                participants: [{
-                                    userId: currentUser.uid,
-                                    username: userData.username,
-                                    trxMined: 0,
-                                    hashRate: 10
-                                }],
-                                createdAt: new Date()
-                            }).then(docRef => {
-                                // Restar Hash Points
-                                return db.collection('users').doc(currentUser.uid).update({
-                                    hashPoints: userData.hashPoints - entryCost
-                                }).then(() => {
-                                    currentTournament = {
-                                        id: docRef.id,
-                                        size: size,
-                                        status: 'joining',
-                                        prize: size * 10,
-                                        entryCost: entryCost,
-                                        participants: [{
-                                            userId: currentUser.uid,
-                                            username: userData.username,
-                                            trxMined: 0,
-                                            hashRate: 10
-                                        }]
-                                    };
-                                    
-                                    showNotification(`Has creado un nuevo torneo. Esperando a ${size - 1} jugadores más.`, 'success');
-                                });
-                            });
-                        }
-                    })
-                    .then(() => {
-                        loadUserData();
-                    })
-                    .catch(error => {
-                        console.error('Error al unirse al torneo:', error);
-                        showNotification('Error al unirse al torneo: ' + error.message, 'error');
-                    });
-            }).catch(() => {
-                // Usuario canceló
-            });
-        }
-        
-        // Iniciar torneo
-        function startTournament(tournamentId) {
-            db.collection('tournaments').doc(tournamentId).update({
-                status: 'active',
-                startTime: new Date()
-            }).then(() => {
-                currentTournament.status = 'active';
-                showNotification('¡El torneo ha comenzado!', 'success');
-                showPage('tournament');
-                initializeTournamentGame();
-            }).catch(error => {
-                console.error('Error al iniciar torneo:', error);
-            });
-        }
-        
-        // Inicializar el juego del torneo
-        function initializeTournamentGame() {
-            if (!currentTournament) return;
-            
-            // Mostrar sección de torneo activo
-            activeTournamentSection.classList.remove('d-none');
-            
-            // Reiniciar variables del juego
-            playerPosition = { x: 200, y: 200 };
-            upgrades = [];
-            players = currentTournament.participants;
-            minedTRX = 0;
-            hashRate = 10;
-            tournamentTimeLeft = 300; // 5 minutos
-            
-            // Actualizar UI
-            hashRateElement.textContent = hashRate + ' H/s';
-            minedTRXElement.textContent = minedTRX;
-            updateTournamentTimer();
-            
-            // Renderizar jugadores
-            renderPlayers();
-            
-            // Generar mejoras iniciales
-            generateUpgrades();
-            
-            // Iniciar intervalos del juego
-            startTournamentIntervals();
-        }
-        
-        // Renderizar jugadores en el mapa
-        function renderPlayers() {
-            gameMap.innerHTML = '';
-            
-            // Renderizar jugador actual
-            const playerElement = document.createElement('div');
-            playerElement.className = 'player me';
-            playerElement.style.left = playerPosition.x + 'px';
-            playerElement.style.top = playerPosition.y + 'px';
-            playerElement.style.background = 'linear-gradient(135deg, #ff6b00, #ff8c00)';
-            playerElement.innerHTML = '<i class="fas fa-user"></i>';
-            gameMap.appendChild(playerElement);
-            
-            // Renderizar otros jugadores (simulados)
-            players.forEach((player, index) => {
-                if (player.userId !== currentUser.uid) {
-                    const otherPlayer = document.createElement('div');
-                    otherPlayer.className = 'player';
-                    otherPlayer.style.left = (100 + index * 50) + 'px';
-                    otherPlayer.style.top = (100 + index * 50) + 'px';
-                    otherPlayer.style.background = 'linear-gradient(135deg, #2196f3, #03a9f4)';
-                    otherPlayer.innerHTML = '<i class="fas fa-user"></i>';
-                    gameMap.appendChild(otherPlayer);
-                }
-            });
-            
-            // Renderizar mejoras
-            upgrades.forEach(upgrade => {
-                const upgradeElement = document.createElement('div');
-                upgradeElement.className = `upgrade ${upgrade.type}`;
-                upgradeElement.style.left = upgrade.x + 'px';
-                upgradeElement.style.top = upgrade.y + 'px';
-                upgradeElement.innerHTML = `<i class="fas fa-${upgrade.icon}"></i>`;
-                upgradeElement.addEventListener('click', function() {
-                    collectUpgrade(upgrade);
-                });
-                gameMap.appendChild(upgradeElement);
-            });
-            
-            // Actualizar ranking
-            updateRanking();
-        }
-        
-        // Generar mejoras en el mapa
-        function generateUpgrades() {
-            const upgradeTypes = [
-                { type: 'nft', icon: 'gem', multiplier: 2 },
-                { type: 'gpu', icon: 'microchip', hashRate: 5 },
-                { type: 'energy', icon: 'bolt', bonus: 10 }
-            ];
-            
-            // Generar 3-5 mejoras
-            const numUpgrades = Math.floor(Math.random() * 3) + 3;
-            
-            for (let i = 0; i < numUpgrades; i++) {
-                const type = upgradeTypes[Math.floor(Math.random() * upgradeTypes.length)];
-                const x = Math.floor(Math.random() * 360) + 20;
-                const y = Math.floor(Math.random() * 360) + 20;
-                
-                upgrades.push({
-                    ...type,
-                    x: x,
-                    y: y,
-                    id: Date.now() + i
-                });
-            }
-            
-            renderPlayers();
-        }
-        
-        // Mover jugador
-        function movePlayer(deltaX, deltaY) {
-            if (!currentTournament) return;
-            
-            // Calcular nueva posición
-            const newX = playerPosition.x + deltaX;
-            const newY = playerPosition.y + deltaY;
-            
-            // Verificar límites del mapa
-            if (newX >= 20 && newX <= 380 && newY >= 20 && newY <= 380) {
-                playerPosition.x = newX;
-                playerPosition.y = newY;
-                
-                // Verificar colisión con mejoras
-                checkUpgradeCollision();
-                
-                renderPlayers();
-            }
-        }
-        
-        // Verificar colisión con mejoras
-        function checkUpgradeCollision() {
-            for (let i = 0; i < upgrades.length; i++) {
-                const upgrade = upgrades[i];
-                const distance = Math.sqrt(
-                    Math.pow(playerPosition.x - upgrade.x, 2) + 
-                    Math.pow(playerPosition.y - upgrade.y, 2)
-                );
-                
-                if (distance < 35) { // Radio de colisión
-                    // Mostrar puzzle para obtener la mejora
-                    showPuzzle(upgrade);
-                    upgrades.splice(i, 1);
-                    break;
-                }
-            }
-        }
-        
-        // Mostrar puzzle para obtener mejora
-        function showPuzzle(upgrade) {
-            // Generar puzzle simple
-            puzzleGrid.innerHTML = '';
-            const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-            const shuffled = [...numbers].sort(() => Math.random() - 0.5);
-            
-            shuffled.forEach(num => {
-                const piece = document.createElement('div');
-                piece.className = 'puzzle-piece';
-                piece.textContent = num;
-                piece.addEventListener('click', function() {
-                    // Resaltar pieza seleccionada
-                    document.querySelectorAll('.puzzle-piece').forEach(p => {
-                        p.style.background = 'var(--primary)';
-                    });
-                    this.style.background = 'var(--secondary)';
-                    window.selectedPuzzleNumber = num;
-                });
-                puzzleGrid.appendChild(piece);
-            });
-            
-            // Configurar timer del puzzle
-            let puzzleTimeLeft = 10;
-            puzzleTimerElement.textContent = `Tiempo: ${puzzleTimeLeft} segundos`;
-            
-            const puzzleTimer = setInterval(() => {
-                puzzleTimeLeft--;
-                puzzleTimerElement.textContent = `Tiempo: ${puzzleTimeLeft} segundos`;
-                
-                if (puzzleTimeLeft <= 0) {
-                    clearInterval(puzzleTimer);
-                    puzzleModal.classList.remove('active');
-                    showNotification('¡Tiempo agotado! Perdiste la mejora.', 'error');
-                }
-            }, 1000);
-            
-            // Guardar información de la mejora
-            window.currentUpgrade = upgrade;
-            window.puzzleTimer = puzzleTimer;
-            
-            // Mostrar modal
-            puzzleModal.classList.add('active');
-        }
-        
-        // Manejar envío de puzzle
-        function handlePuzzleSubmit() {
-            clearInterval(window.puzzleTimer);
-            puzzleModal.classList.remove('active');
-            
-            if (!window.selectedPuzzleNumber) {
-                showNotification('Debes seleccionar un número', 'error');
-                return;
-            }
-            
-            // Simular verificación del puzzle (siempre exitosa por ahora)
-            applyUpgrade(window.currentUpgrade);
-            showNotification(`¡Has obtenido una mejora: ${window.currentUpgrade.type.toUpperCase()}!`, 'success');
-            
-            // Limpiar variables temporales
-            window.selectedPuzzleNumber = null;
-            window.currentUpgrade = null;
-            window.puzzleTimer = null;
-        }
-        
-        // Aplicar mejora al jugador
-        function applyUpgrade(upgrade) {
-            switch(upgrade.type) {
-                case 'nft':
-                    hashRate *= upgrade.multiplier;
-                    showNotification(`¡NFT raro encontrado! Hash rate multiplicado x${upgrade.multiplier}`, 'success');
-                    break;
-                case 'gpu':
-                    hashRate += upgrade.hashRate;
-                    showNotification(`¡Nueva GPU instalada! +${upgrade.hashRate} H/s`, 'success');
-                    break;
-                case 'energy':
-                    minedTRX += upgrade.bonus;
-                    showNotification(`¡Bonus de energía! +${upgrade.bonus} TRX`, 'success');
-                    break;
-            }
-            
-            hashRateElement.textContent = hashRate + ' H/s';
-            minedTRXElement.textContent = minedTRX;
-            
-            // Actualizar ranking
-            updateRanking();
-        }
-        
-        // Actualizar ranking
-        function updateRanking() {
-            // Simular datos de otros jugadores
-            const rankingData = [
-                { username: userData.username, trxMined: minedTRX, isMe: true },
-                { username: 'Jugador2', trxMined: Math.floor(Math.random() * 50) + 10, isMe: false },
-                { username: 'Jugador3', trxMined: Math.floor(Math.random() * 40) + 5, isMe: false },
-                { username: 'Jugador4', trxMined: Math.floor(Math.random() * 30), isMe: false }
-            ];
-            
-            // Ordenar por TRX minado (descendente)
-            rankingData.sort((a, b) => b.trxMined - a.trxMined);
-            
-            // Renderizar ranking
-            rankingList.innerHTML = '';
-            rankingData.forEach((player, index) => {
-                const rankingItem = document.createElement('div');
-                rankingItem.className = 'ranking-item';
-                
-                rankingItem.innerHTML = `
-                    <div class="ranking-position ${index < 3 ? 'top3' : ''}">${index + 1}</div>
-                    <div class="ranking-details">
-                        <div class="ranking-name ${player.isMe ? 'text-primary' : ''}">
-                            ${player.username} ${player.isMe ? '(Tú)' : ''}
-                        </div>
-                        <div class="ranking-trx">${player.trxMined} TRX</div>
-                    </div>
-                `;
-                
-                rankingList.appendChild(rankingItem);
-            });
-        }
-        
-        // Iniciar intervalos del torneo
-        function startTournamentIntervals() {
-            // Intervalo para minar TRX
-            setInterval(() => {
-                if (currentTournament && currentTournament.status === 'active') {
-                    minedTRX += hashRate / 10; // 10 H/s = 1 TRX por segundo
-                    minedTRXElement.textContent = Math.floor(minedTRX);
-                    updateRanking();
-                }
-            }, 1000);
-            
-            // Intervalo para el temporizador del torneo
-            tournamentInterval = setInterval(() => {
-                if (currentTournament && currentTournament.status === 'active') {
-                    tournamentTimeLeft--;
-                    updateTournamentTimer();
-                    
-                    if (tournamentTimeLeft <= 0) {
-                        endTournament();
-                    }
-                }
-            }, 1000);
-            
-            // Intervalo para generar nuevas mejoras
-            setInterval(() => {
-                if (currentTournament && currentTournament.status === 'active' && upgrades.length < 3) {
-                    generateUpgrades();
-                }
-            }, 10000); // Cada 10 segundos
-        }
-        
-        // Actualizar temporizador del torneo
-        function updateTournamentTimer() {
-            const minutes = Math.floor(tournamentTimeLeft / 60);
-            const seconds = tournamentTimeLeft % 60;
-            tournamentTimer.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-        }
-        
-        // Finalizar torneo
-        function endTournament() {
-            if (!currentTournament) return;
-            
-            clearInterval(tournamentInterval);
-            
-            // Determinar ganador (simulado)
-            const winner = userData.username; // Por simplicidad, el usuario actual gana
-            
-            showConfirmation(
-                '¡Torneo Finalizado!',
-                `¡Felicidades ${winner}! Has ganado el torneo.`,
-                `Has minado ${minedTRX} TRX y ganado ${currentTournament.prize} TRX.`,
-                'success'
-            ).then(() => {
-                // Actualizar balance del usuario
-                const newBalance = (userData.balance || 0) + currentTournament.prize;
-                
-                return db.collection('users').doc(currentUser.uid).update({
-                    balance: newBalance
-                });
-            })
-            .then(() => {
-                // Registrar transacción de premio
-                return db.collection('transactions').add({
-                    userId: currentUser.uid,
-                    type: 'tournament',
-                    amount: currentTournament.prize,
-                    description: `Premio del torneo PvP (${currentTournament.size} jugadores)`,
-                    date: new Date(),
-                    status: 'completed'
-                });
-            })
-            .then(() => {
-                // Actualizar estado del torneo
-                return db.collection('tournaments').doc(currentTournament.id).update({
-                    status: 'finished',
-                    winner: currentUser.uid,
-                    endTime: new Date()
-                });
-            })
-            .then(() => {
-                showNotification(`¡Has ganado ${currentTournament.prize} TRX!`, 'success');
-                currentTournament = null;
-                activeTournamentSection.classList.add('d-none');
-                loadUserData();
-            })
-            .catch(error => {
-                console.error('Error al finalizar torneo:', error);
-                showNotification('Error al procesar el premio del torneo', 'error');
-            });
-        }
-        
-        // Resto del código existente (las funciones de autenticación, inversiones, etc.)
-        // ... (mantener todo el código existente sin cambios)
         
         // Mostrar/ocultar menú lateral
         function toggleSidebar() {
@@ -3641,8 +2669,6 @@
                     updateAvailableBalance();
                 } else if (pageId === 'referrals') {
                     loadReferralsData();
-                } else if (pageId === 'tournament') {
-                    // No es necesario cargar datos adicionales por ahora
                 } else if (pageId === 'history') {
                     loadTransactionHistory();
                 } else if (pageId === 'profile') {
@@ -3825,7 +2851,8 @@
                         lastLogin: new Date(),
                         welcomeBonusClaimed: true, // Marcar que ya recibió el bono
                         hasMadeFirstInvestment: false, // Para saber si ya realizó la primera inversión
-                        hashPoints: 100 // Puntos de hash iniciales para el torneo
+                        hasMadeFirstWithdrawal: false, // Para controlar el primer retiro
+                        lastDepositAfterFirstWithdrawal: 0 // Para controlar depósitos después del primer retiro
                     });
                 })
                 .then(() => {
@@ -4316,6 +3343,13 @@
             let totalPercentage = 45;
             
             switch(plan) {
+                case 'initial':
+                    planName = 'Plan Inicial';
+                    minAmount = 10;
+                    maxAmount = 10;
+                    dailyPercentage = 3;
+                    totalPercentage = 45;
+                    break;
                 case 'basic':
                     planName = 'Plan Básico';
                     minAmount = 30;
@@ -4406,8 +3440,8 @@
             const amount = parseFloat(document.getElementById('investmentAmount').value);
             const plan = document.getElementById('selectedPlan').value;
             
-            if (amount < 30 || amount > 5000) {
-                showNotification('El monto de inversión debe estar entre 30 y 5000 TRX', 'error');
+            if (amount < 10 || amount > 5000) {
+                showNotification('El monto de inversión debe estar entre 10 y 5000 TRX', 'error');
                 return;
             }
             
@@ -4598,6 +3632,14 @@
                 });
             })
             .then(() => {
+                // Si el usuario ya realizó su primer retiro, actualizar el campo de depósito después del primer retiro
+                if (userData.hasMadeFirstWithdrawal) {
+                    return db.collection('users').doc(currentUser.uid).update({
+                        lastDepositAfterFirstWithdrawal: (userData.lastDepositAfterFirstWithdrawal || 0) + amount
+                    });
+                }
+            })
+            .then(() => {
                 showNotification('Solicitud de depósito enviada. Será procesada manualmente.', 'success');
                 document.getElementById('depositAmount').value = '';
                 document.getElementById('transactionHash').value = '';
@@ -4707,6 +3749,15 @@
             } else {
                 lockedBalanceSection.classList.add('d-none');
             }
+            
+            // Actualizar texto de retiro mínimo según si ya realizó el primer retiro
+            if (userData.hasMadeFirstWithdrawal) {
+                document.getElementById('withdrawAmount').setAttribute('min', '10');
+                withdrawMinText.textContent = 'Debes depositar mínimo 10 TRX para realizar nuevos retiros después del primer retiro.';
+            } else {
+                document.getElementById('withdrawAmount').setAttribute('min', '2');
+                withdrawMinText.textContent = 'El retiro mínimo es de 2 TRX para el primer retiro.';
+            }
         }
         
         // Manejar retiro
@@ -4716,8 +3767,14 @@
             const amount = parseFloat(document.getElementById('withdrawAmount').value);
             const address = document.getElementById('withdrawAddress').value;
             
-            if (amount < 5) {
-                showNotification('El retiro mínimo es de 5 TRX', 'error');
+            // Verificar monto mínimo según si es el primer retiro o no
+            let minAmount = 2;
+            if (userData.hasMadeFirstWithdrawal) {
+                minAmount = 10;
+            }
+            
+            if (amount < minAmount) {
+                showNotification(`El retiro mínimo es de ${minAmount} TRX`, 'error');
                 return;
             }
             
@@ -4730,6 +3787,12 @@
                 } else {
                     showNotification('Saldo insuficiente para realizar este retiro', 'error');
                 }
+                return;
+            }
+            
+            // Si ya realizó el primer retiro, verificar que haya depositado al menos 10 TRX después del primer retiro
+            if (userData.hasMadeFirstWithdrawal && (userData.lastDepositAfterFirstWithdrawal || 0) < 10) {
+                showNotification('Debes depositar mínimo 10 TRX para realizar nuevos retiros después del primer retiro', 'error');
                 return;
             }
             
@@ -4768,9 +3831,17 @@
             .then(() => {
                 // Actualizar saldo del usuario
                 const newBalance = userData.balance - amount;
-                return db.collection('users').doc(currentUser.uid).update({
+                
+                // Si es el primer retiro, marcar que ya realizó el primer retiro
+                let updateData = {
                     balance: newBalance
-                });
+                };
+                
+                if (!userData.hasMadeFirstWithdrawal) {
+                    updateData.hasMadeFirstWithdrawal = true;
+                }
+                
+                return db.collection('users').doc(currentUser.uid).update(updateData);
             })
             .then(() => {
                 showNotification('Solicitud de retiro enviada. Será procesada dentro de 24 horas.', 'success');
