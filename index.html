@@ -1078,6 +1078,10 @@
             border-left-color: var(--warning);
         }
         
+        .notification.info {
+            border-left-color: var(--primary);
+        }
+        
         .notification-icon {
             width: 24px;
             height: 24px;
@@ -2417,14 +2421,14 @@
             userRef.get().then(doc => {
                 if (!doc.exists) {
                     // Crear documento de usuario con todos los campos necesarios
-                    // MODIFICACIÓN: Agregar bono de 10 TRX para nuevos usuarios
+                    // MODIFICACIÓN: Agregar bono de 10 TRX como plan activo para nuevos usuarios
                     userRef.set({
                         username: currentUser.displayName || currentUser.email.split('@')[0],
                         email: currentUser.email,
                         referralCode: generateReferralCode(),
                         referredBy: null,
-                        balance: 10, // BONO DE 10 TRX PARA NUEVOS USUARIOS
-                        lockedBalance: 10, // 10 TRX BLOQUEADOS HASTA LA PRIMERA INVERSIÓN
+                        balance: 0, // Balance inicial 0
+                        lockedBalance: 0, // No hay balance bloqueado
                         totalEarnings: 0,
                         totalInvested: 0,
                         activeInvestments: 0,
@@ -2437,45 +2441,77 @@
                         lastReferralClaim: null,
                         registrationDate: new Date(),
                         lastLogin: new Date(),
-                        welcomeBonusClaimed: true, // Marcar que ya recibió el bono
-                        hasMadeFirstInvestment: false, // Para saber si ya realizó la primera inversión
-                        hasMadeFirstWithdrawal: false, // Para controlar el primer retiro
-                        lastDepositAfterFirstWithdrawal: 0, // Para controlar depósitos después del primer retiro
-                        deviceId: getDeviceId() // Almacenar ID del dispositivo
+                        welcomeBonusClaimed: false, // No se ha reclamado el bono todavía
+                        hasMadeFirstInvestment: false,
+                        hasMadeFirstWithdrawal: false,
+                        lastDepositAfterFirstWithdrawal: 0,
+                        deviceId: getDeviceId()
+                    }).then(() => {
+                        // Crear automáticamente un plan activo de 10 TRX como bono de bienvenida
+                        return db.collection('investments').add({
+                            userId: currentUser.uid,
+                            amount: 10,
+                            plan: "Plan Bono de Bienvenida",
+                            startDate: new Date(),
+                            endDate: new Date(Date.now() + 15 * 24 * 60 * 60 * 1000), // 15 días
+                            status: 'active',
+                            earned: 0,
+                            lastClaim: new Date(),
+                            isWelcomeBonus: true // Marcar como bono de bienvenida
+                        });
+                    }).then(() => {
+                        // Actualizar contador de inversiones activas
+                        return db.collection('users').doc(currentUser.uid).update({
+                            activeInvestments: 1,
+                            welcomeBonusClaimed: true
+                        });
                     }).then(() => {
                         // Registrar transacción del bono de bienvenida
                         return db.collection('transactions').add({
                             userId: currentUser.uid,
                             type: 'bonus',
                             amount: 10,
-                            description: 'Bono de bienvenida de 10 TRX',
+                            description: 'Bono de bienvenida: Plan activo de 10 TRX',
                             date: new Date(),
                             status: 'completed'
                         });
                     }).then(() => {
                         loadUserData();
-                        showNotification('¡Bienvenido! Se te han acreditado 10 TRX como bono de bienvenida.', 'success');
+                        showNotification('¡Bienvenido! Se te ha activado un plan de 10 TRX como bono de bienvenida.', 'success');
                     });
                 } else {
                     // Si el usuario ya existe, verificar si ya recibió el bono
                     const userData = doc.data();
                     if (!userData.welcomeBonusClaimed) {
-                        userRef.update({
-                            balance: (userData.balance || 0) + 10,
-                            lockedBalance: (userData.lockedBalance || 0) + 10,
-                            welcomeBonusClaimed: true
+                        // Crear automáticamente un plan activo de 10 TRX como bono de bienvenida
+                        return db.collection('investments').add({
+                            userId: currentUser.uid,
+                            amount: 10,
+                            plan: "Plan Bono de Bienvenida",
+                            startDate: new Date(),
+                            endDate: new Date(Date.now() + 15 * 24 * 60 * 60 * 1000), // 15 días
+                            status: 'active',
+                            earned: 0,
+                            lastClaim: new Date(),
+                            isWelcomeBonus: true // Marcar como bono de bienvenida
+                        }).then(() => {
+                            // Actualizar contador de inversiones activas
+                            return db.collection('users').doc(currentUser.uid).update({
+                                activeInvestments: (userData.activeInvestments || 0) + 1,
+                                welcomeBonusClaimed: true
+                            });
                         }).then(() => {
                             // Registrar transacción del bono de bienvenida
                             return db.collection('transactions').add({
                                 userId: currentUser.uid,
                                 type: 'bonus',
                                 amount: 10,
-                                description: 'Bono de bienvenida de 10 TRX',
+                                description: 'Bono de bienvenida: Plan activo de 10 TRX',
                                 date: new Date(),
                                 status: 'completed'
                             });
                         }).then(() => {
-                            showNotification('¡Bienvenido! Se te han acreditado 10 TRX como bono de bienvenida.', 'success');
+                            showNotification('¡Bienvenido! Se te ha activado un plan de 10 TRX como bono de bienvenida.', 'success');
                             loadUserData();
                         });
                     }
@@ -2829,14 +2865,14 @@
                     const userReferralCode = generateReferralCode();
                     
                     // Crear documento de usuario en Firestore
-                    // MODIFICACIÓN: Agregar bono de 10 TRX para nuevos usuarios
+                    // MODIFICACIÓN: Balance inicial 0, el bono será un plan activo
                     return db.collection('users').doc(user.uid).set({
                         username: username,
                         email: email,
                         referralCode: userReferralCode,
                         referredBy: referralCode || null,
-                        balance: 10, // BONO DE 10 TRX PARA NUEVOS USUARIOS
-                        lockedBalance: 10, // 10 TRX BLOQUEADOS HASTA LA PRIMERA INVERSIÓN
+                        balance: 0, // Balance inicial 0
+                        lockedBalance: 0, // No hay balance bloqueado
                         totalEarnings: 0,
                         totalInvested: 0,
                         activeInvestments: 0,
@@ -2849,11 +2885,32 @@
                         lastReferralClaim: null,
                         registrationDate: new Date(),
                         lastLogin: new Date(),
-                        welcomeBonusClaimed: true, // Marcar que ya recibió el bono
-                        hasMadeFirstInvestment: false, // Para saber si ya realizó la primera inversión
-                        hasMadeFirstWithdrawal: false, // Para controlar el primer retiro
-                        lastDepositAfterFirstWithdrawal: 0, // Para controlar depósitos después del primer retiro
-                        deviceId: deviceId // Almacenar ID del dispositivo
+                        welcomeBonusClaimed: false, // No se ha reclamado el bono todavía
+                        hasMadeFirstInvestment: false,
+                        hasMadeFirstWithdrawal: false,
+                        lastDepositAfterFirstWithdrawal: 0,
+                        deviceId: deviceId
+                    });
+                })
+                .then(() => {
+                    // Crear automáticamente un plan activo de 10 TRX como bono de bienvenida
+                    return db.collection('investments').add({
+                        userId: currentUser.uid,
+                        amount: 10,
+                        plan: "Plan Bono de Bienvenida",
+                        startDate: new Date(),
+                        endDate: new Date(Date.now() + 15 * 24 * 60 * 60 * 1000), // 15 días
+                        status: 'active',
+                        earned: 0,
+                        lastClaim: new Date(),
+                        isWelcomeBonus: true // Marcar como bono de bienvenida
+                    });
+                })
+                .then(() => {
+                    // Actualizar contador de inversiones activas
+                    return db.collection('users').doc(currentUser.uid).update({
+                        activeInvestments: 1,
+                        welcomeBonusClaimed: true
                     });
                 })
                 .then(() => {
@@ -2862,7 +2919,7 @@
                         userId: currentUser.uid,
                         type: 'bonus',
                         amount: 10,
-                        description: 'Bono de bienvenida de 10 TRX',
+                        description: 'Bono de bienvenida: Plan activo de 10 TRX',
                         date: new Date(),
                         status: 'completed'
                     });
@@ -2871,7 +2928,7 @@
                     // Distribuir comisiones por referidos (0.1 TRX por cada referido)
                     distributeReferralCommissions(referralCode, 0.1, 'Nivel 1: 0.1 TRX por referido directo');
                     
-                    showNotification('Cuenta creada exitosamente. ¡Se te han acreditado 10 TRX como bono de bienvenida!', 'success');
+                    showNotification('Cuenta creada exitosamente. ¡Se te ha activado un plan de 10 TRX como bono de bienvenida!', 'success');
                     showAuthModal('login');
                 })
                 .catch((error) => {
@@ -3088,9 +3145,12 @@
             const totalEarned = dailyEarnings * daysPassed;
             const availableEarnings = calculateAvailableEarnings(investment);
             
+            // Determinar si es el bono de bienvenida
+            const isWelcomeBonus = investment.isWelcomeBonus || false;
+            
             card.innerHTML = `
                 <div class="investment-header">
-                    <div class="investment-title">Inversión #${id.substring(0, 8)}</div>
+                    <div class="investment-title">${isWelcomeBonus ? 'Bono de Bienvenida' : 'Inversión #' + id.substring(0, 8)}</div>
                     <span class="investment-plan">${investment.plan}</span>
                 </div>
                 
@@ -3161,6 +3221,9 @@
                     }
                     
                     const investment = doc.data();
+                    
+                    // Determinar si es el bono de bienvenida
+                    const isWelcomeBonus = investment.isWelcomeBonus || false;
                     
                     // Calcular información detallada
                     const startDate = investment.startDate.toDate();
@@ -3234,7 +3297,7 @@
                         </div>
                         
                         <div class="text-center mt-3">
-                            <p class="text-muted">Esta inversión generará ganancias diarias durante 15 días.</p>
+                            <p class="text-muted">${isWelcomeBonus ? 'Este es tu bono de bienvenida. Generará ganancias diarias durante 15 días.' : 'Esta inversión generará ganancias diarias durante 15 días.'}</p>
                         </div>
                     `;
                     
@@ -3315,7 +3378,7 @@
                             userId: currentUser.uid,
                             type: 'earning',
                             amount: availableEarnings,
-                            description: `Ganancias de inversión reclamadas`,
+                            description: `Ganancias de ${investment.isWelcomeBonus ? 'bono de bienvenida' : 'inversión'} reclamadas`,
                             date: new Date(),
                             status: 'completed'
                         });
@@ -3473,7 +3536,7 @@
                 const newTotalInvested = (userData.totalInvested || 0) + amount;
                 const newActiveInvestments = (userData.activeInvestments || 0) + 1;
                 
-                // Si es la primera inversión del usuario, desbloquear los 10 TRX bloqueados
+                // Si es la primera inversión del usuario, marcar como tal
                 let updateData = {
                     balance: newBalance,
                     totalInvested: newTotalInvested,
@@ -3482,8 +3545,6 @@
                 
                 if (!userData.hasMadeFirstInvestment) {
                     updateData.hasMadeFirstInvestment = true;
-                    updateData.lockedBalance = 0; // Desbloquear los 10 TRX
-                    updateData.balance = newBalance + 10; // Agregar los 10 TRX desbloqueados al balance
                 }
                 
                 return db.collection('users').doc(currentUser.uid).update(updateData);
@@ -3735,17 +3796,12 @@
         function updateAvailableBalance() {
             if (!userData) return;
             
-            // Calcular saldo disponible (balance total menos balance bloqueado)
-            const availableBalance = (userData.balance || 0) - (userData.lockedBalance || 0);
+            // Calcular saldo disponible (balance total)
+            const availableBalance = userData.balance || 0;
             document.getElementById('availableBalance').value = availableBalance + ' TRX';
             
-            // Mostrar u ocultar la sección de balance bloqueado
-            if (userData.lockedBalance > 0) {
-                lockedBalanceSection.classList.remove('d-none');
-                lockedBalanceAmount.textContent = userData.lockedBalance + ' TRX';
-            } else {
-                lockedBalanceSection.classList.add('d-none');
-            }
+            // Ocultar la sección de balance bloqueado (ya no hay balance bloqueado)
+            lockedBalanceSection.classList.add('d-none');
             
             // Actualizar texto de retiro mínimo según si ya realizó el primer retiro
             if (userData.hasMadeFirstWithdrawal) {
@@ -3775,8 +3831,8 @@
                 return;
             }
             
-            // Calcular saldo disponible (balance total menos balance bloqueado)
-            const availableBalance = (userData.balance || 0) - (userData.lockedBalance || 0);
+            // Calcular saldo disponible (balance total)
+            const availableBalance = userData.balance || 0;
             
             if (amount > availableBalance) {
                 showNotification('Saldo insuficiente para realizar este retiro', 'error');
