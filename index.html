@@ -1478,8 +1478,6 @@
             color: var(--dark);
         }
 
-        /* ESTILOS PARA EL TORNEO DE MINERÍA PvP (ELIMINADOS) */
-        
         /* Filtros de transacciones */
         .transaction-filters {
             display: flex;
@@ -1660,31 +1658,87 @@
                 </div>
             </div>
             
-            <!-- Página de Inversión - MODIFICADA: UN SOLO PLAN -->
+            <!-- Página de Inversión - MODIFICADA: NUEVOS PLANES AGREGADOS -->
             <div id="invest-page" class="page d-none">
                 <h1 class="mb-3">Realizar Inversión</h1>
                 
                 <div class="section">
                     <div class="section-header">
-                        <div class="section-title">Plan de Inversión</div>
+                        <div class="section-title">Planes de Inversión</div>
                     </div>
                     
                     <div class="alert alert-warning">
-                        <i class="fas fa-info-circle"></i> El plan único paga un 3% diario durante 15 días (45% de retorno total).
+                        <i class="fas fa-info-circle"></i> Todos los planes pagan un 3% diario durante 15 días (45% de retorno total).
                     </div>
                     
                     <div class="dashboard-cards">
-                        <!-- ÚNICO PLAN DE 10 TRX -->
+                        <!-- PLANES DE INVERSIÓN ACTUALIZADOS -->
                         <div class="card">
                             <div class="card-header">
-                                <div class="card-title">Plan Único</div>
+                                <div class="card-title">Plan Básico</div>
                                 <div class="card-icon primary">
                                     <i class="fas fa-cube"></i>
                                 </div>
                             </div>
-                            <div class="card-value">10 TRX</div>
+                            <div class="card-value">15 TRX</div>
                             <div class="card-description">3% diario por 15 días</div>
-                            <button class="btn btn-primary mt-3" data-plan="unique">
+                            <button class="btn btn-primary mt-3" data-plan="basic">
+                                <i class="fas fa-check"></i> Seleccionar
+                            </button>
+                        </div>
+                        
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">Plan Estándar</div>
+                                <div class="card-icon secondary">
+                                    <i class="fas fa-cube"></i>
+                                </div>
+                            </div>
+                            <div class="card-value">30 TRX</div>
+                            <div class="card-description">3% diario por 15 días</div>
+                            <button class="btn btn-primary mt-3" data-plan="standard">
+                                <i class="fas fa-check"></i> Seleccionar
+                            </button>
+                        </div>
+                        
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">Plan Avanzado</div>
+                                <div class="card-icon warning">
+                                    <i class="fas fa-cube"></i>
+                                </div>
+                            </div>
+                            <div class="card-value">60 TRX</div>
+                            <div class="card-description">3% diario por 15 días</div>
+                            <button class="btn btn-primary mt-3" data-plan="advanced">
+                                <i class="fas fa-check"></i> Seleccionar
+                            </button>
+                        </div>
+                        
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">Plan Premium</div>
+                                <div class="card-icon danger">
+                                    <i class="fas fa-cube"></i>
+                                </div>
+                            </div>
+                            <div class="card-value">90 TRX</div>
+                            <div class="card-description">3% diario por 15 días</div>
+                            <button class="btn btn-primary mt-3" data-plan="premium">
+                                <i class="fas fa-check"></i> Seleccionar
+                            </button>
+                        </div>
+                        
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">Plan VIP</div>
+                                <div class="card-icon primary">
+                                    <i class="fas fa-crown"></i>
+                                </div>
+                            </div>
+                            <div class="card-value">110 TRX</div>
+                            <div class="card-description">3% diario por 15 días</div>
+                            <button class="btn btn-primary mt-3" data-plan="vip">
                                 <i class="fas fa-check"></i> Seleccionar
                             </button>
                         </div>
@@ -1704,8 +1758,8 @@
                         
                         <div class="form-group">
                             <label class="form-label">Monto a invertir (TRX)</label>
-                            <input type="number" class="form-control" id="investmentAmount" min="10" max="10" required readonly>
-                            <div class="form-text">El monto fijo es de 10 TRX para el plan único.</div>
+                            <input type="number" class="form-control" id="investmentAmount" min="15" required readonly>
+                            <div class="form-text">El monto mínimo es de 15 TRX.</div>
                         </div>
                         
                         <div class="form-group">
@@ -1747,8 +1801,8 @@
                     
                     <div class="form-group">
                         <label class="form-label">Monto a depositar (TRX)</label>
-                        <input type="number" class="form-control" id="depositAmount" min="10" required>
-                        <div class="form-text">El depósito mínimo es de 10 TRX.</div>
+                        <input type="number" class="form-control" id="depositAmount" min="15" required>
+                        <div class="form-text">El depósito mínimo es de 15 TRX.</div>
                     </div>
                     
                     <div class="form-group">
@@ -1795,7 +1849,7 @@
                     </div>
                     
                     <div class="alert alert-warning">
-                        <i class="fas fa-info-circle"></i> Los retiros se procesan dentro de las 24 horas. El monto mínimo de retiro es de 2 TRX para el primer retiro, luego debe depositar mínimo 10 TRX para realizar nuevos retiros.
+                        <i class="fas fa-info-circle"></i> Los retiros se procesan dentro de las 24 horas. El monto mínimo de retiro es de 2 TRX para el primer retiro, luego debe depositar mínimo 15 TRX para realizar nuevos retiros.
                     </div>
                     
                     <!-- Sección de Balance Bloqueado -->
@@ -2348,102 +2402,65 @@
             userRef.get().then(doc => {
                 if (!doc.exists) {
                     // Crear documento de usuario con todos los campos necesarios
-                    // MODIFICACIÓN: En lugar de dar bono de 10 TRX, crear automáticamente el plan de 10 TRX
+                    // MODIFICACIÓN: Agregar bono de 10 TRX para nuevos usuarios
                     userRef.set({
                         username: currentUser.displayName || currentUser.email.split('@')[0],
                         email: currentUser.email,
                         referralCode: generateReferralCode(),
                         referredBy: null,
-                        balance: 0, // NO HAY BONO DE 10 TRX
-                        lockedBalance: 0, // NO HAY TRX BLOQUEADOS
+                        balance: 10, // BONO DE 10 TRX PARA NUEVOS USUARIOS
+                        lockedBalance: 10, // 10 TRX BLOQUEADOS HASTA LA PRIMERA INVERSIÓN
                         totalEarnings: 0,
                         totalInvested: 0,
                         activeInvestments: 0,
                         totalReferrals: 0,
                         totalCommissions: 0,
-                        availableCommissions: 0, // MODIFICACIÓN: Comisiones disponibles en 0
+                        availableCommissions: 0,
                         referralEarnings: 0,
                         level2Commissions: 0,
                         level3Commissions: 0,
                         lastReferralClaim: null,
                         registrationDate: new Date(),
                         lastLogin: new Date(),
-                        welcomeBonusClaimed: false, // No se da bono de bienvenida
+                        welcomeBonusClaimed: true, // Marcar que ya recibió el bono
                         hasMadeFirstInvestment: false, // Para saber si ya realizó la primera inversión
                         hasMadeFirstWithdrawal: false, // Para controlar el primer retiro
                         lastDepositAfterFirstWithdrawal: 0, // Para controlar depósitos después del primer retiro
                         deviceId: getDeviceId() // Almacenar ID del dispositivo
                     }).then(() => {
-                        // MODIFICACIÓN: Crear automáticamente el plan de 10 TRX para el nuevo usuario
-                        return db.collection('investments').add({
-                            userId: currentUser.uid,
-                            amount: 10,
-                            plan: "Plan Único Automático",
-                            startDate: new Date(), // MODIFICACIÓN: Comienza desde ahora
-                            endDate: new Date(Date.now() + 15 * 24 * 60 * 60 * 1000), // 15 días
-                            status: 'active',
-                            earned: 0,
-                            lastClaim: new Date(),
-                            automaticPlan: true // Marcar que es un plan automático
-                        });
-                    }).then(() => {
-                        // Actualizar contador de inversiones activas
-                        return db.collection('users').doc(currentUser.uid).update({
-                            activeInvestments: 1,
-                            hasMadeFirstInvestment: true // Marcar que ya realizó la primera inversión
-                        });
-                    }).then(() => {
-                        // Registrar transacción de inversión automática
+                        // Registrar transacción del bono de bienvenida
                         return db.collection('transactions').add({
                             userId: currentUser.uid,
-                            type: 'investment',
+                            type: 'bonus',
                             amount: 10,
-                            description: 'Plan Único Automático de 10 TRX',
+                            description: 'Bono de bienvenida de 10 TRX',
                             date: new Date(),
                             status: 'completed'
                         });
                     }).then(() => {
                         loadUserData();
-                        showNotification('¡Se ha activado automáticamente tu Plan Único de 10 TRX!', 'success');
+                        showNotification('¡Bienvenido! Se te han acreditado 10 TRX como bono de bienvenida.', 'success');
                     });
                 } else {
                     // Si el usuario ya existe, verificar si ya recibió el bono
                     const userData = doc.data();
                     if (!userData.welcomeBonusClaimed) {
-                        // MODIFICACIÓN: En lugar de dar bono, crear automáticamente el plan de 10 TRX
                         userRef.update({
+                            balance: (userData.balance || 0) + 10,
+                            lockedBalance: (userData.lockedBalance || 0) + 10,
                             welcomeBonusClaimed: true
                         }).then(() => {
-                            // Crear automáticamente el plan de 10 TRX para usuarios existentes que no lo tengan
-                            return db.collection('investments').add({
-                                userId: currentUser.uid,
-                                amount: 10,
-                                plan: "Plan Único Automático",
-                                startDate: new Date(), // MODIFICACIÓN: Comienza desde ahora
-                                endDate: new Date(Date.now() + 15 * 24 * 60 * 60 * 1000), // 15 días
-                                status: 'active',
-                                earned: 0,
-                                lastClaim: new Date(),
-                                automaticPlan: true // Marcar que es un plan automático
-                            });
-                        }).then(() => {
-                            // Actualizar contador de inversiones activas
-                            return db.collection('users').doc(currentUser.uid).update({
-                                activeInvestments: (userData.activeInvestments || 0) + 1,
-                                hasMadeFirstInvestment: true // Marcar que ya realizó la primera inversión
-                            });
-                        }).then(() => {
-                            // Registrar transacción de inversión automática
+                            // Registrar transacción del bono de bienvenida
                             return db.collection('transactions').add({
                                 userId: currentUser.uid,
-                                type: 'investment',
+                                type: 'bonus',
                                 amount: 10,
-                                description: 'Plan Único Automático de 10 TRX',
+                                description: 'Bono de bienvenida de 10 TRX',
                                 date: new Date(),
                                 status: 'completed'
                             });
                         }).then(() => {
-                            showNotification('¡Se ha activado automáticamente tu Plan Único de 10 TRX!', 'success');
+                            showNotification('¡Bienvenido! Se te han acreditado 10 TRX como bono de bienvenida.', 'success');
                             loadUserData();
                         });
                     }
@@ -2797,27 +2814,27 @@
                     const userReferralCode = generateReferralCode();
                     
                     // Crear documento de usuario en Firestore
-                    // MODIFICACIÓN: En lugar de dar bono de 10 TRX, crear automáticamente el plan de 10 TRX
+                    // MODIFICACIÓN: Agregar bono de 10 TRX para nuevos usuarios
                     return db.collection('users').doc(user.uid).set({
                         username: username,
                         email: email,
                         referralCode: userReferralCode,
                         referredBy: referralCode || null,
-                        balance: 0, // NO HAY BONO DE 10 TRX
-                        lockedBalance: 0, // NO HAY TRX BLOQUEADOS
+                        balance: 10, // BONO DE 10 TRX PARA NUEVOS USUARIOS
+                        lockedBalance: 10, // 10 TRX BLOQUEADOS HASTA LA PRIMERA INVERSIÓN
                         totalEarnings: 0,
                         totalInvested: 0,
                         activeInvestments: 0,
                         totalReferrals: 0,
                         totalCommissions: 0,
-                        availableCommissions: 0, // MODIFICACIÓN: Comisiones disponibles en 0
+                        availableCommissions: 0,
                         referralEarnings: 0,
                         level2Commissions: 0,
                         level3Commissions: 0,
                         lastReferralClaim: null,
                         registrationDate: new Date(),
                         lastLogin: new Date(),
-                        welcomeBonusClaimed: false, // No se da bono de bienvenida
+                        welcomeBonusClaimed: true, // Marcar que ya recibió el bono
                         hasMadeFirstInvestment: false, // Para saber si ya realizó la primera inversión
                         hasMadeFirstWithdrawal: false, // Para controlar el primer retiro
                         lastDepositAfterFirstWithdrawal: 0, // Para controlar depósitos después del primer retiro
@@ -2825,33 +2842,12 @@
                     });
                 })
                 .then(() => {
-                    // MODIFICACIÓN: Crear automáticamente el plan de 10 TRX para el nuevo usuario
-                    return db.collection('investments').add({
-                        userId: currentUser.uid,
-                        amount: 10,
-                        plan: "Plan Único Automático",
-                        startDate: new Date(), // MODIFICACIÓN: Comienza desde ahora
-                        endDate: new Date(Date.now() + 15 * 24 * 60 * 60 * 1000), // 15 días
-                        status: 'active',
-                        earned: 0,
-                        lastClaim: new Date(),
-                        automaticPlan: true // Marcar que es un plan automático
-                    });
-                })
-                .then(() => {
-                    // Actualizar contador de inversiones activas
-                    return db.collection('users').doc(currentUser.uid).update({
-                        activeInvestments: 1,
-                        hasMadeFirstInvestment: true // Marcar que ya realizó la primera inversión
-                    });
-                })
-                .then(() => {
-                    // Registrar transacción de inversión automática
+                    // Registrar transacción del bono de bienvenida
                     return db.collection('transactions').add({
                         userId: currentUser.uid,
-                        type: 'investment',
+                        type: 'bonus',
                         amount: 10,
-                        description: 'Plan Único Automático de 10 TRX',
+                        description: 'Bono de bienvenida de 10 TRX',
                         date: new Date(),
                         status: 'completed'
                     });
@@ -2860,7 +2856,7 @@
                     // Distribuir comisiones por referidos (0.1 TRX por cada referido)
                     distributeReferralCommissions(referralCode, 0.1, 'Nivel 1: 0.1 TRX por referido directo');
                     
-                    showNotification('Cuenta creada exitosamente. ¡Se ha activado automáticamente tu Plan Único de 10 TRX!', 'success');
+                    showNotification('Cuenta creada exitosamente. ¡Se te han acreditado 10 TRX como bono de bienvenida!', 'success');
                     showAuthModal('login');
                 })
                 .catch((error) => {
@@ -3330,17 +3326,56 @@
             const investmentForm = document.getElementById('investmentForm');
             const selectedPlan = document.getElementById('selectedPlan');
             
-            // MODIFICACIÓN: Solo hay un plan único
-            let planName = 'Plan Único';
-            let minAmount = 10;
-            let maxAmount = 10;
+            // MODIFICACIÓN: Agregar los nuevos planes de inversión
+            let planName = '';
+            let amount = 0;
+            let minAmount = 0;
+            let maxAmount = 0;
             let dailyPercentage = 3;
             let totalPercentage = 45;
+            
+            switch(plan) {
+                case 'basic':
+                    planName = 'Plan Básico';
+                    amount = 15;
+                    minAmount = 15;
+                    maxAmount = 15;
+                    break;
+                case 'standard':
+                    planName = 'Plan Estándar';
+                    amount = 30;
+                    minAmount = 30;
+                    maxAmount = 30;
+                    break;
+                case 'advanced':
+                    planName = 'Plan Avanzado';
+                    amount = 60;
+                    minAmount = 60;
+                    maxAmount = 60;
+                    break;
+                case 'premium':
+                    planName = 'Plan Premium';
+                    amount = 90;
+                    minAmount = 90;
+                    maxAmount = 90;
+                    break;
+                case 'vip':
+                    planName = 'Plan VIP';
+                    amount = 110;
+                    minAmount = 110;
+                    maxAmount = 110;
+                    break;
+                default:
+                    planName = 'Plan Básico';
+                    amount = 15;
+                    minAmount = 15;
+                    maxAmount = 15;
+            }
             
             selectedPlan.value = planName;
             document.getElementById('investmentAmount').setAttribute('min', minAmount);
             document.getElementById('investmentAmount').setAttribute('max', maxAmount);
-            document.getElementById('investmentAmount').value = minAmount;
+            document.getElementById('investmentAmount').value = amount;
             document.getElementById('expectedEarningsText').textContent = 
                 `${dailyPercentage}% diario durante 15 días (${totalPercentage}% de retorno total).`;
             
@@ -3379,9 +3414,11 @@
             const amount = parseFloat(document.getElementById('investmentAmount').value);
             const plan = document.getElementById('selectedPlan').value;
             
-            // MODIFICACIÓN: Solo se permite el plan único de 10 TRX
-            if (amount !== 10) {
-                showNotification('El monto de inversión debe ser exactamente 10 TRX para el plan único', 'error');
+            // MODIFICACIÓN: Verificar el monto mínimo según el plan seleccionado
+            const minAmount = parseFloat(document.getElementById('investmentAmount').getAttribute('min'));
+            
+            if (amount < minAmount) {
+                showNotification(`El monto mínimo para el ${plan} es de ${minAmount} TRX`, 'error');
                 return;
             }
             
@@ -3402,7 +3439,7 @@
                     userId: currentUser.uid,
                     amount: amount,
                     plan: plan,
-                    startDate: new Date(), // MODIFICACIÓN: Comienza desde ahora
+                    startDate: new Date(),
                     endDate: new Date(Date.now() + 15 * 24 * 60 * 60 * 1000), // 15 días
                     status: 'active',
                     earned: 0,
@@ -3424,7 +3461,8 @@
                 
                 if (!userData.hasMadeFirstInvestment) {
                     updateData.hasMadeFirstInvestment = true;
-                    // MODIFICACIÓN: No hay TRX bloqueados, así que no hay que desbloquear nada
+                    updateData.lockedBalance = 0; // Desbloquear los 10 TRX
+                    updateData.balance = newBalance + 10; // Agregar los 10 TRX desbloqueados al balance
                 }
                 
                 return db.collection('users').doc(currentUser.uid).update(updateData);
@@ -3536,8 +3574,8 @@
             const amount = parseFloat(document.getElementById('depositAmount').value);
             const transactionHash = document.getElementById('transactionHash').value;
             
-            if (amount < 10) {
-                showNotification('El depósito mínimo es de 10 TRX', 'error');
+            if (amount < 15) {
+                showNotification('El depósito mínimo es de 15 TRX', 'error');
                 return;
             }
             
@@ -3680,13 +3718,18 @@
             const availableBalance = (userData.balance || 0) - (userData.lockedBalance || 0);
             document.getElementById('availableBalance').value = availableBalance + ' TRX';
             
-            // MODIFICACIÓN: No hay balance bloqueado, así que ocultar la sección
-            lockedBalanceSection.classList.add('d-none');
+            // Mostrar u ocultar la sección de balance bloqueado
+            if (userData.lockedBalance > 0) {
+                lockedBalanceSection.classList.remove('d-none');
+                lockedBalanceAmount.textContent = userData.lockedBalance + ' TRX';
+            } else {
+                lockedBalanceSection.classList.add('d-none');
+            }
             
             // Actualizar texto de retiro mínimo según si ya realizó el primer retiro
             if (userData.hasMadeFirstWithdrawal) {
-                document.getElementById('withdrawAmount').setAttribute('min', '10');
-                withdrawMinText.textContent = 'Debes depositar mínimo 10 TRX para realizar nuevos retiros después del primer retiro.';
+                document.getElementById('withdrawAmount').setAttribute('min', '15');
+                withdrawMinText.textContent = 'Debes depositar mínimo 15 TRX para realizar nuevos retiros después del primer retiro.';
             } else {
                 document.getElementById('withdrawAmount').setAttribute('min', '2');
                 withdrawMinText.textContent = 'El retiro mínimo es de 2 TRX para el primer retiro.';
@@ -3703,7 +3746,7 @@
             // Verificar monto mínimo según si es el primer retiro o no
             let minAmount = 2;
             if (userData.hasMadeFirstWithdrawal) {
-                minAmount = 10;
+                minAmount = 15;
             }
             
             if (amount < minAmount) {
@@ -3719,9 +3762,9 @@
                 return;
             }
             
-            // Si ya realizó el primer retiro, verificar que haya depositado al menos 10 TRX después del primer retiro
-            if (userData.hasMadeFirstWithdrawal && (userData.lastDepositAfterFirstWithdrawal || 0) < 10) {
-                showNotification('Debes depositar mínimo 10 TRX para realizar nuevos retiros después del primer retiro', 'error');
+            // Si ya realizó el primer retiro, verificar que haya depositado al menos 15 TRX después del primer retiro
+            if (userData.hasMadeFirstWithdrawal && (userData.lastDepositAfterFirstWithdrawal || 0) < 15) {
+                showNotification('Debes depositar mínimo 15 TRX para realizar nuevos retiros después del primer retiro', 'error');
                 return;
             }
             
