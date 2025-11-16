@@ -1672,6 +1672,21 @@
                     </div>
                     
                     <div class="dashboard-cards">
+                        <!-- PLAN DE 10 TRX AGREGADO -->
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">Plan Inicial</div>
+                                <div class="card-icon primary">
+                                    <i class="fas fa-cube"></i>
+                                </div>
+                            </div>
+                            <div class="card-value">10 TRX</div>
+                            <div class="card-description">3% diario por 15 días</div>
+                            <button class="btn btn-primary mt-3" data-plan="initial">
+                                <i class="fas fa-check"></i> Seleccionar
+                            </button>
+                        </div>
+                        
                         <!-- PLANES DE INVERSIÓN ACTUALIZADOS -->
                         <div class="card">
                             <div class="card-header">
@@ -1758,8 +1773,8 @@
                         
                         <div class="form-group">
                             <label class="form-label">Monto a invertir (TRX)</label>
-                            <input type="number" class="form-control" id="investmentAmount" min="15" required readonly>
-                            <div class="form-text">El monto mínimo es de 15 TRX.</div>
+                            <input type="number" class="form-control" id="investmentAmount" min="10" required readonly>
+                            <div class="form-text">El monto mínimo es de 10 TRX.</div>
                         </div>
                         
                         <div class="form-group">
@@ -1801,8 +1816,8 @@
                     
                     <div class="form-group">
                         <label class="form-label">Monto a depositar (TRX)</label>
-                        <input type="number" class="form-control" id="depositAmount" min="15" required>
-                        <div class="form-text">El depósito mínimo es de 15 TRX.</div>
+                        <input type="number" class="form-control" id="depositAmount" min="10" required>
+                        <div class="form-text">El depósito mínimo es de 10 TRX.</div>
                     </div>
                     
                     <div class="form-group">
@@ -1849,7 +1864,7 @@
                     </div>
                     
                     <div class="alert alert-warning">
-                        <i class="fas fa-info-circle"></i> Los retiros se procesan dentro de las 24 horas. El monto mínimo de retiro es de 2 TRX para el primer retiro, luego debe depositar mínimo 15 TRX para realizar nuevos retiros.
+                        <i class="fas fa-info-circle"></i> Los retiros se procesan dentro de las 24 horas. El monto mínimo de retiro es de 2 TRX para el primer retiro, luego debe depositar mínimo 10 TRX para realizar nuevos retiros.
                     </div>
                     
                     <!-- Sección de Balance Bloqueado -->
@@ -3326,7 +3341,7 @@
             const investmentForm = document.getElementById('investmentForm');
             const selectedPlan = document.getElementById('selectedPlan');
             
-            // MODIFICACIÓN: Agregar los nuevos planes de inversión
+            // MODIFICACIÓN: Agregar los nuevos planes de inversión incluyendo el de 10 TRX
             let planName = '';
             let amount = 0;
             let minAmount = 0;
@@ -3335,6 +3350,12 @@
             let totalPercentage = 45;
             
             switch(plan) {
+                case 'initial':
+                    planName = 'Plan Inicial';
+                    amount = 10;
+                    minAmount = 10;
+                    maxAmount = 10;
+                    break;
                 case 'basic':
                     planName = 'Plan Básico';
                     amount = 15;
@@ -3366,10 +3387,10 @@
                     maxAmount = 110;
                     break;
                 default:
-                    planName = 'Plan Básico';
-                    amount = 15;
-                    minAmount = 15;
-                    maxAmount = 15;
+                    planName = 'Plan Inicial';
+                    amount = 10;
+                    minAmount = 10;
+                    maxAmount = 10;
             }
             
             selectedPlan.value = planName;
@@ -3574,8 +3595,8 @@
             const amount = parseFloat(document.getElementById('depositAmount').value);
             const transactionHash = document.getElementById('transactionHash').value;
             
-            if (amount < 15) {
-                showNotification('El depósito mínimo es de 15 TRX', 'error');
+            if (amount < 10) {
+                showNotification('El depósito mínimo es de 10 TRX', 'error');
                 return;
             }
             
@@ -3728,8 +3749,8 @@
             
             // Actualizar texto de retiro mínimo según si ya realizó el primer retiro
             if (userData.hasMadeFirstWithdrawal) {
-                document.getElementById('withdrawAmount').setAttribute('min', '15');
-                withdrawMinText.textContent = 'Debes depositar mínimo 15 TRX para realizar nuevos retiros después del primer retiro.';
+                document.getElementById('withdrawAmount').setAttribute('min', '10');
+                withdrawMinText.textContent = 'Debes depositar mínimo 10 TRX para realizar nuevos retiros después del primer retiro.';
             } else {
                 document.getElementById('withdrawAmount').setAttribute('min', '2');
                 withdrawMinText.textContent = 'El retiro mínimo es de 2 TRX para el primer retiro.';
@@ -3746,7 +3767,7 @@
             // Verificar monto mínimo según si es el primer retiro o no
             let minAmount = 2;
             if (userData.hasMadeFirstWithdrawal) {
-                minAmount = 15;
+                minAmount = 10;
             }
             
             if (amount < minAmount) {
@@ -3762,9 +3783,9 @@
                 return;
             }
             
-            // Si ya realizó el primer retiro, verificar que haya depositado al menos 15 TRX después del primer retiro
-            if (userData.hasMadeFirstWithdrawal && (userData.lastDepositAfterFirstWithdrawal || 0) < 15) {
-                showNotification('Debes depositar mínimo 15 TRX para realizar nuevos retiros después del primer retiro', 'error');
+            // Si ya realizó el primer retiro, verificar que haya depositado al menos 10 TRX después del primer retiro
+            if (userData.hasMadeFirstWithdrawal && (userData.lastDepositAfterFirstWithdrawal || 0) < 10) {
+                showNotification('Debes depositar mínimo 10 TRX para realizar nuevos retiros después del primer retiro', 'error');
                 return;
             }
             
