@@ -1848,7 +1848,7 @@
                     <div class="form-group">
                         <label class="form-label">Monto a depositar (TRX)</label>
                         <input type="number" class="form-control" id="depositAmount" min="10" required>
-                        <div class="form-text">El depósito mínimo es de 10 TRX.</div>
+                        <div class="form-text">El depósito mínimo es de 10 TRX. Cualquier depósito mayor de 10 TRX será aprobado y habilitará los retiros.</div>
                     </div>
                     
                     <div class="form-group">
@@ -1900,7 +1900,7 @@
                             <i class="fas fa-lock"></i>
                             <div>
                                 <strong>Retiros Deshabilitados</strong>
-                                <div class="form-text">Para habilitar los retiros, debes realizar un depósito de 10 TRX que será aprobado por el administrador. Una vez aprobado, podrás realizar retiros normalmente.</div>
+                                <div class="form-text">Para habilitar los retiros, debes realizar un depósito de 10 TRX o más que será aprobado por el administrador. Una vez aprobado, podrás realizar retiros normalmente.</div>
                             </div>
                         </div>
                         
@@ -1908,7 +1908,7 @@
                             <i class="fas fa-check-circle"></i>
                             <div>
                                 <strong>Retiros Habilitados</strong>
-                                <div class="form-text">Tu depósito de verificación ha sido aprobado. Ahora puedes realizar retiros normalmente.</div>
+                                <div class="form-text">Tu depósito ha sido aprobado. Ahora puedes realizar retiros normalmente.</div>
                             </div>
                         </div>
                     </div>
@@ -1949,7 +1949,7 @@
                         <i class="fas fa-paper-plane"></i> Solicitar Retiro
                     </button>
                     <div class="form-text text-center mt-2" id="withdrawalDisabledText">
-                        Los retiros están deshabilitados hasta que se apruebe tu depósito de verificación de 10 TRX.
+                        Los retiros están deshabilitados hasta que se apruebe tu depósito de 10 TRX o más.
                     </div>
                 </div>
                 
@@ -3120,17 +3120,27 @@
             document.getElementById('totalReferrals').textContent = userData.totalReferrals || 0;
         }
         
-        // NUEVA FUNCIÓN: Verificar si el usuario tiene un depósito aprobado de 10 TRX
+        // NUEVA FUNCIÓN: Verificar si el usuario tiene un depósito aprobado de 10 TRX o más
         function checkDepositApproval() {
             if (!currentUser) return false;
             
             return db.collection('deposits')
                 .where('userId', '==', currentUser.uid)
-                .where('amount', '==', 10)
                 .where('status', '==', 'completed')
                 .get()
                 .then(snapshot => {
-                    return !snapshot.empty;
+                    if (snapshot.empty) return false;
+                    
+                    // Verificar si hay algún depósito aprobado de 10 TRX o más
+                    let hasApprovedDeposit = false;
+                    snapshot.forEach(doc => {
+                        const deposit = doc.data();
+                        if (deposit.amount >= 10) {
+                            hasApprovedDeposit = true;
+                        }
+                    });
+                    
+                    return hasApprovedDeposit;
                 })
                 .catch(error => {
                     console.error('Error al verificar depósitos aprobados:', error);
@@ -3142,7 +3152,7 @@
         function updateWithdrawalStatus() {
             if (!userData) return;
             
-            // Verificar si el usuario tiene un depósito aprobado de 10 TRX
+            // Verificar si el usuario tiene un depósito aprobado de 10 TRX o más
             checkDepositApproval().then(hasApprovedDeposit => {
                 if (hasApprovedDeposit) {
                     // Si tiene un depósito aprobado, habilitar retiros
@@ -3747,15 +3757,15 @@
                 return;
             }
             
-            // NUEVA LÓGICA: Si es un depósito de 10 TRX, marcarlo como verificación
-            const isVerificationDeposit = (amount === 10);
+            // NUEVA LÓGICA: Si es un depósito de 10 TRX o más, marcarlo como verificación
+            const isVerificationDeposit = (amount >= 10);
             
             // Mostrar confirmación
             showConfirmation(
                 'Solicitar Depósito',
                 `¿Estás seguro de que deseas solicitar un depósito de ${amount} TRX?`,
                 isVerificationDeposit ? 
-                    'Este depósito de 10 TRX servirá para verificar tu cuenta y habilitar los retiros. Será revisado por el administrador.' :
+                    'Este depósito de 10 TRX o más servirá para verificar tu cuenta y habilitar los retiros. Será revisado por el administrador.' :
                     'El depósito será procesado manualmente. Asegúrate de enviar el monto exacto a la dirección proporcionada.',
                 'info'
             ).then(() => {
@@ -3911,7 +3921,7 @@
             
             // NUEVA VERIFICACIÓN: Comprobar si los retiros están habilitados
             if (!userData.withdrawalEnabled) {
-                showNotification('Los retiros están deshabilitados. Debes realizar un depósito de 10 TRX que sea aprobado por el administrador para habilitar los retiros.', 'error');
+                showNotification('Los retiros están deshabilitados. Debes realizar un depósito de 10 TRX o más que sea aprobado por el administrador para habilitar los retiros.', 'error');
                 return;
             }
             
