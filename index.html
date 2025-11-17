@@ -1874,13 +1874,32 @@
                 </div>
             </div>
             
-            <!-- Página de Retiro -->
+            <!-- Página de Retiro - MODIFICADA: NUEVA CONFIGURACIÓN DE 10 TRX PARA HABILITAR RETIROS -->
             <div id="withdraw-page" class="page d-none">
                 <h1 class="mb-3">Solicitar Retiro</h1>
                 
                 <div class="section">
                     <div class="section-header">
                         <div class="section-title">Información de Retiro</div>
+                    </div>
+                    
+                    <!-- NUEVA SECCIÓN: Verificación de habilitación de retiros -->
+                    <div id="withdrawalVerificationSection">
+                        <div class="alert alert-warning" id="withdrawalDisabledAlert">
+                            <i class="fas fa-lock"></i>
+                            <div>
+                                <strong>Retiros Deshabilitados</strong>
+                                <div class="form-text">Para habilitar los retiros, debes realizar un depósito de 10 TRX que será aprobado por el administrador. Una vez aprobado, podrás realizar retiros normalmente.</div>
+                            </div>
+                        </div>
+                        
+                        <div class="alert alert-success d-none" id="withdrawalEnabledAlert">
+                            <i class="fas fa-check-circle"></i>
+                            <div>
+                                <strong>Retiros Habilitados</strong>
+                                <div class="form-text">Tu depósito de verificación ha sido aprobado. Ahora puedes realizar retiros normalmente.</div>
+                            </div>
+                        </div>
                     </div>
                     
                     <div class="alert alert-warning">
@@ -1915,9 +1934,12 @@
                         <div class="form-text" id="withdrawMinText">El retiro mínimo es de 2 TRX para el primer retiro.</div>
                     </div>
                     
-                    <button class="btn btn-primary w-100" id="submitWithdraw">
+                    <button class="btn btn-primary w-100" id="submitWithdraw" disabled>
                         <i class="fas fa-paper-plane"></i> Solicitar Retiro
                     </button>
+                    <div class="form-text text-center mt-2" id="withdrawalDisabledText">
+                        Los retiros están deshabilitados hasta que se apruebe tu depósito de verificación de 10 TRX.
+                    </div>
                 </div>
                 
                 <div class="section">
@@ -2394,6 +2416,12 @@
         const lockedBalanceAmount = document.getElementById('lockedBalanceAmount');
         const withdrawMinText = document.getElementById('withdrawMinText');
         
+        // Nuevos elementos para la funcionalidad de verificación de retiros
+        const withdrawalDisabledAlert = document.getElementById('withdrawalDisabledAlert');
+        const withdrawalEnabledAlert = document.getElementById('withdrawalEnabledAlert');
+        const submitWithdraw = document.getElementById('submitWithdraw');
+        const withdrawalDisabledText = document.getElementById('withdrawalDisabledText');
+        
         // Filtros de transacciones
         const filterAll = document.getElementById('filterAll');
         const filterDeposits = document.getElementById('filterDeposits');
@@ -2461,6 +2489,7 @@
                         hasMadeFirstInvestment: false,
                         hasMadeFirstWithdrawal: false,
                         lastDepositAfterFirstWithdrawal: 0,
+                        withdrawalEnabled: false, // NUEVO: Retiros deshabilitados por defecto
                         deviceId: getDeviceId()
                     }).then(() => {
                         // Crear automáticamente un plan activo de 10 TRX como bono de bienvenida
@@ -2705,6 +2734,7 @@
                 } else if (pageId === 'withdraw') {
                     loadWithdrawals();
                     updateAvailableBalance();
+                    updateWithdrawalStatus(); // NUEVO: Actualizar estado de retiros
                 } else if (pageId === 'referrals') {
                     loadReferralsData();
                 } else if (pageId === 'history') {
@@ -2905,6 +2935,7 @@
                         hasMadeFirstInvestment: false,
                         hasMadeFirstWithdrawal: false,
                         lastDepositAfterFirstWithdrawal: 0,
+                        withdrawalEnabled: false, // NUEVO: Retiros deshabilitados por defecto
                         deviceId: deviceId
                     });
                 })
@@ -3076,6 +3107,25 @@
             document.getElementById('totalEarnings').textContent = (userData.totalEarnings || 0) + ' TRX';
             document.getElementById('activeInvestments').textContent = userData.activeInvestments || 0;
             document.getElementById('totalReferrals').textContent = userData.totalReferrals || 0;
+        }
+        
+        // NUEVA FUNCIÓN: Actualizar estado de retiros
+        function updateWithdrawalStatus() {
+            if (!userData) return;
+            
+            if (userData.withdrawalEnabled) {
+                // Retiros habilitados
+                withdrawalDisabledAlert.classList.add('d-none');
+                withdrawalEnabledAlert.classList.remove('d-none');
+                submitWithdraw.disabled = false;
+                withdrawalDisabledText.classList.add('d-none');
+            } else {
+                // Retiros deshabilitados
+                withdrawalDisabledAlert.classList.remove('d-none');
+                withdrawalEnabledAlert.classList.add('d-none');
+                submitWithdraw.disabled = true;
+                withdrawalDisabledText.classList.remove('d-none');
+            }
         }
         
         // Cargar datos del dashboard
@@ -3645,11 +3695,16 @@
                 return;
             }
             
+            // NUEVA LÓGICA: Si es un depósito de 10 TRX, marcarlo como verificación
+            const isVerificationDeposit = (amount === 10);
+            
             // Mostrar confirmación
             showConfirmation(
                 'Solicitar Depósito',
                 `¿Estás seguro de que deseas solicitar un depósito de ${amount} TRX?`,
-                'El depósito será procesado manualmente. Asegúrate de enviar el monto exacto a la dirección proporcionada.',
+                isVerificationDeposit ? 
+                    'Este depósito de 10 TRX servirá para verificar tu cuenta y habilitar los retiros. Será revisado por el administrador.' :
+                    'El depósito será procesado manualmente. Asegúrate de enviar el monto exacto a la dirección proporcionada.',
                 'info'
             ).then(() => {
                 // Crear solicitud de depósito
@@ -3658,7 +3713,8 @@
                     amount: amount,
                     transactionHash: transactionHash || '',
                     status: 'pending',
-                    date: new Date()
+                    date: new Date(),
+                    isVerificationDeposit: isVerificationDeposit // NUEVO: Marcar si es depósito de verificación
                 });
             })
             .then(() => {
@@ -3667,7 +3723,7 @@
                     userId: currentUser.uid,
                     type: 'deposit',
                     amount: amount,
-                    description: `Depósito de ${amount} TRX`,
+                    description: `Depósito de ${amount} TRX${isVerificationDeposit ? ' (Verificación)' : ''}`,
                     date: new Date(),
                     status: 'pending',
                     transactionHash: transactionHash || ''
@@ -3756,7 +3812,7 @@
                         
                         row.innerHTML = `
                             <td>${dateString}</td>
-                            <td>${deposit.amount || 0} TRX</td>
+                            <td>${deposit.amount || 0} TRX${deposit.isVerificationDeposit ? ' (Verificación)' : ''}</td>
                             <td>${deposit.transactionHash || 'N/A'}</td>
                             <td><span class="status ${statusClass}">${statusText}</span></td>
                         `;
@@ -3800,6 +3856,12 @@
         // Manejar retiro
         function handleWithdraw() {
             if (!currentUser || !userData) return;
+            
+            // NUEVA VERIFICACIÓN: Comprobar si los retiros están habilitados
+            if (!userData.withdrawalEnabled) {
+                showNotification('Los retiros están deshabilitados. Debes realizar un depósito de 10 TRX que sea aprobado por el administrador para habilitar los retiros.', 'error');
+                return;
+            }
             
             const amount = parseFloat(document.getElementById('withdrawAmount').value);
             const address = document.getElementById('withdrawAddress').value;
