@@ -1874,7 +1874,7 @@
                 </div>
             </div>
             
-            <!-- Página de Retiro - MODIFICADA: NUEVA CONFIGURACIÓN DE 10 TRX PARA HABILITAR RETIROS -->
+            <!-- Página de Retiro - MODIFICADA: NUEVA CONFIGURACIÓN PARA VERIFICACIÓN DE DEPÓSITO -->
             <div id="withdraw-page" class="page d-none">
                 <h1 class="mb-3">Solicitar Retiro</h1>
                 
@@ -3109,11 +3109,52 @@
             document.getElementById('totalReferrals').textContent = userData.totalReferrals || 0;
         }
         
+        // NUEVA FUNCIÓN: Verificar si el usuario tiene un depósito aprobado de 10 TRX
+        function checkDepositApproval() {
+            if (!currentUser) return false;
+            
+            return db.collection('deposits')
+                .where('userId', '==', currentUser.uid)
+                .where('amount', '==', 10)
+                .where('status', '==', 'completed')
+                .get()
+                .then(snapshot => {
+                    return !snapshot.empty;
+                })
+                .catch(error => {
+                    console.error('Error al verificar depósitos aprobados:', error);
+                    return false;
+                });
+        }
+        
         // NUEVA FUNCIÓN: Actualizar estado de retiros
         function updateWithdrawalStatus() {
             if (!userData) return;
             
-            if (userData.withdrawalEnabled) {
+            // Verificar si el usuario tiene un depósito aprobado de 10 TRX
+            checkDepositApproval().then(hasApprovedDeposit => {
+                if (hasApprovedDeposit) {
+                    // Si tiene un depósito aprobado, habilitar retiros
+                    if (!userData.withdrawalEnabled) {
+                        // Actualizar estado en la base de datos
+                        db.collection('users').doc(currentUser.uid).update({
+                            withdrawalEnabled: true
+                        }).then(() => {
+                            userData.withdrawalEnabled = true;
+                            updateWithdrawalUI(true);
+                        });
+                    } else {
+                        updateWithdrawalUI(true);
+                    }
+                } else {
+                    updateWithdrawalUI(false);
+                }
+            });
+        }
+        
+        // NUEVA FUNCIÓN: Actualizar la interfaz de usuario según el estado de retiros
+        function updateWithdrawalUI(withdrawalEnabled) {
+            if (withdrawalEnabled) {
                 // Retiros habilitados
                 withdrawalDisabledAlert.classList.add('d-none');
                 withdrawalEnabledAlert.classList.remove('d-none');
